@@ -1,0 +1,2561 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Спутник — Туризм в Татарстане</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- TTForsTrial via bunny fonts CDN (TypeType). Falls back to Inter for unsupported browsers -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== TTForsTrial @font-face ===== */
+        @font-face {
+            font-family: 'TTFors';
+            src: url('https://db.onlinewebfonts.com/t/4ccb9d43cfc86faa9890e88ad7c4a9db.woff2') format('woff2'),
+                 url('https://db.onlinewebfonts.com/t/4ccb9d43cfc86faa9890e88ad7c4a9db.woff') format('woff');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'TTFors';
+            src: url('https://db.onlinewebfonts.com/t/4ccb9d43cfc86faa9890e88ad7c4a9db.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        /* ===== Design Tokens ===== */
+        :root {
+            --bg: #F5F0E8;
+            --bg-secondary: #EDE7DB;
+            --card-bg: #FFFFFF;
+            --text: #1A1714;
+            --text-secondary: #7A7068;
+            --text-muted: #A89E92;
+            --accent: #C8A96E;
+            --accent-hover: #B8945A;
+            --accent-light: #EDD9B0;
+            --accent-glow: rgba(200, 169, 110, 0.30);
+            --accent-glow-strong: rgba(200, 169, 110, 0.55);
+            --gold: #C8A96E;
+            --gold-light: #E5C98A;
+            --border: #E2D9CC;
+            --border-subtle: #EDE8E0;
+            --item-bg: #F2EBE0;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow: 0 8px 32px rgba(200,169,110,0.10), 0 2px 8px rgba(0,0,0,0.03);
+            --shadow-lg: 0 24px 60px rgba(200,169,110,0.14), 0 8px 24px rgba(0,0,0,0.05);
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.04);
+            --switch-bg: #D0C6B8;
+            --switch-dot: #FFFFFF;
+            --radius: 24px;
+            --radius-sm: 14px;
+            --radius-pill: 999px;
+            --font: 'TTFors', 'Inter', sans-serif;
+            --hero-bg: url('https://tatarica.org/application/files/2115/4108/2808/Bez-imeni-5.jpg');
+            --nav-bg: rgba(245,240,232,0.82);
+            --marquee-gap: 32px;
+        }
+
+        .dark-theme {
+            --bg: #141210;
+            --bg-secondary: #1C1A18;
+            --card-bg: #201E1B;
+            --text: #F0EBE3;
+            --text-secondary: #9E9488;
+            --text-muted: #6A6058;
+            --accent: #C8A96E;
+            --accent-hover: #D9BA80;
+            --accent-light: #3A2E1E;
+            --accent-glow: rgba(200,169,110,0.20);
+            --accent-glow-strong: rgba(200,169,110,0.40);
+            --gold: #C8A96E;
+            --gold-light: #D9BA7E;
+            --border: #2E2A25;
+            --border-subtle: #252220;
+            --item-bg: #272320;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.20);
+            --shadow: 0 8px 32px rgba(0,0,0,0.25), 0 2px 8px rgba(0,0,0,0.15);
+            --shadow-lg: 0 24px 60px rgba(0,0,0,0.40), 0 8px 24px rgba(0,0,0,0.25);
+            --shadow-card: 0 1px 3px rgba(0,0,0,0.20), 0 8px 24px rgba(0,0,0,0.18);
+            --switch-bg: #4A4038;
+            --switch-dot: #E8DDD0;
+            --hero-bg: url('https://s0.rbk.ru/v6_top_pics/media/img/9/55/756473411057559.jpg');
+            --nav-bg: rgba(20,18,16,0.88);
+        }
+
+        /* ===== Reset & Base ===== */
+        *, *::before, *::after {
+            margin: 0; padding: 0; box-sizing: border-box;
+        }
+        html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.3s ease;
+        }
+
+        /* Animated background gradient orbs */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 900px 600px at 15% 10%, rgba(200,169,110,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 700px 500px at 85% 30%, rgba(180,140,90,0.05) 0%, transparent 70%),
+                radial-gradient(ellipse 600px 700px at 50% 80%, rgba(210,175,120,0.04) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+            animation: bgPulse 14s ease-in-out infinite alternate;
+        }
+        .dark-theme body::after {
+            background:
+                radial-gradient(ellipse 900px 600px at 15% 10%, rgba(200,169,110,0.08) 0%, transparent 70%),
+                radial-gradient(ellipse 700px 500px at 85% 30%, rgba(150,110,60,0.07) 0%, transparent 70%),
+                radial-gradient(ellipse 600px 700px at 50% 80%, rgba(180,140,80,0.05) 0%, transparent 70%);
+        }
+        @keyframes bgPulse {
+            0% { opacity: 0.7; transform: scale(1); }
+            100% { opacity: 1; transform: scale(1.04); }
+        }
+
+        /* ===== Noise/Grain overlay ===== */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+            background-size: 160px 160px;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+        }
+
+        /* ===== Navigation ===== */
+        .top-nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            background: var(--nav-bg);
+            border-bottom: 1px solid transparent;
+            padding: 0 40px;
+            height: 68px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(32px) saturate(1.6);
+            -webkit-backdrop-filter: blur(32px) saturate(1.6);
+            transition: background 0.35s, border-color 0.35s, box-shadow 0.35s;
+        }
+        .top-nav.scrolled {
+            border-bottom-color: var(--border-subtle);
+            box-shadow: 0 1px 0 var(--border-subtle), 0 4px 20px rgba(0,0,0,0.04);
+        }
+
+        .nav-brand {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em;
+            color: var(--text); text-decoration: none; cursor: pointer; user-select: none;
+        }
+        .nav-brand img {
+            height: 34px; width: 34px; border-radius: 10px;
+            object-fit: cover; pointer-events: none;
+        }
+        .nav-brand-dot { color: var(--accent); }
+
+        .nav-actions {
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* Nav Buttons */
+        .nav-btn {
+            display: flex; align-items: center; gap: 7px;
+            padding: 9px 18px; border-radius: var(--radius-pill);
+            font-family: var(--font); font-size: 0.84rem; font-weight: 600;
+            cursor: pointer; border: none; letter-spacing: -0.01em;
+            white-space: nowrap;
+            transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .nav-btn:active { transform: scale(0.96); }
+
+        .nav-btn-icon {
+            display: flex; align-items: center; justify-content: center;
+            width: 38px; height: 38px; padding: 0;
+            border-radius: var(--radius-pill);
+            background: transparent;
+            border: 1.5px solid var(--border);
+            color: var(--text);
+            cursor: pointer;
+            font-family: var(--font);
+            transition: all 0.22s;
+        }
+        .nav-btn-icon:hover { background: var(--item-bg); border-color: var(--accent); }
+        .nav-btn-icon svg { width: 17px; height: 17px; }
+
+        .nav-btn-primary { background: var(--text); color: var(--bg); }
+        .nav-btn-primary:hover { background: var(--accent); color: #fff; }
+
+        .nav-btn-ghost {
+            background: transparent;
+            border: 1.5px solid var(--border);
+            color: var(--text);
+        }
+        .nav-btn-ghost:hover { background: var(--item-bg); border-color: var(--accent); color: var(--accent); }
+
+        .nav-count {
+            background: var(--accent); color: #fff;
+            min-width: 20px; height: 20px;
+            border-radius: var(--radius-pill);
+            font-size: 0.72rem; font-weight: 700;
+            display: flex; align-items: center; justify-content: center;
+            padding: 0 5px; letter-spacing: 0;
+        }
+
+        .theme-toggle {
+            width: 38px; height: 38px;
+            border-radius: var(--radius-pill);
+            border: 1.5px solid var(--border);
+            background: transparent;
+            cursor: pointer; color: var(--text);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            font-family: var(--font);
+            overflow: hidden;
+            position: relative;
+        }
+        .theme-toggle:hover { background: var(--item-bg); border-color: var(--accent); transform: scale(1.08); }
+        .theme-toggle:active { transform: scale(0.9); }
+        .theme-toggle svg { width: 16px; height: 16px; }
+        @keyframes themeIconIn {
+            0% { transform: rotate(-90deg) scale(0.3); opacity: 0; }
+            100% { transform: rotate(0deg) scale(1); opacity: 1; }
+        }
+        @keyframes themeIconOut {
+            0% { transform: rotate(0deg) scale(1); opacity: 1; }
+            100% { transform: rotate(90deg) scale(0.3); opacity: 0; }
+        }
+        .theme-toggle.spinning svg { animation: themeIconIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+
+        #userGreeting {
+            display: none; font-weight: 600;
+            color: var(--accent); font-size: 0.86rem;
+        }
+
+        /* ===== Hero ===== */
+        .hero {
+            width: 100%;
+            min-height: 92vh;
+            background-image: var(--hero-bg);
+            background-size: cover;
+            background-position: center 30%;
+            background-attachment: fixed;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 120px;
+        }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                0deg,
+                rgba(10,8,6,0.80) 0%,
+                rgba(10,8,6,0.35) 45%,
+                rgba(10,8,6,0.10) 75%,
+                transparent 100%
+            );
+        }
+        .hero-fade {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 200px;
+            background: linear-gradient(to bottom, transparent, var(--bg));
+        }
+        .hero-content {
+            position: relative; z-index: 2;
+            text-align: center;
+            padding: 0 24px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 5px; text-transform: uppercase;
+            color: var(--accent); margin-bottom: 20px;
+            display: flex; align-items: center; gap: 12px;
+        }
+        .hero-eyebrow::before, .hero-eyebrow::after {
+            content: '';
+            display: block; width: 32px; height: 1px;
+            background: var(--accent); opacity: 0.6;
+        }
+
+        .hero h1 {
+            font-size: clamp(5rem, 14vw, 10rem);
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            line-height: 0.9;
+            color: #F5F0E8;
+            margin-bottom: 24px;
+        }
+        .hero h1 .gold-letter {
+            color: var(--accent);
+            text-shadow: 0 0 80px rgba(200,169,110,0.6);
+        }
+
+        .hero-subtitle {
+            font-size: 1rem; color: rgba(245,240,232,0.55);
+            letter-spacing: 4px; text-transform: uppercase; font-weight: 400;
+            margin-bottom: 40px;
+        }
+
+        .hero-stats {
+            display: flex; gap: 48px; align-items: center;
+        }
+        .hero-stat { text-align: center; }
+        .hero-stat-num {
+            font-size: 1.8rem; font-weight: 700;
+            color: #F5F0E8; letter-spacing: -0.03em; line-height: 1;
+        }
+        .hero-stat-num span { color: var(--accent); }
+        .hero-stat-label {
+            font-size: 0.72rem; color: rgba(245,240,232,0.45);
+            text-transform: uppercase; letter-spacing: 2px;
+            margin-top: 4px;
+        }
+        .hero-stat-divider {
+            width: 1px; height: 36px;
+            background: rgba(245,240,232,0.15);
+        }
+
+        /* Hero scroll cue */
+        .hero-scroll-cue {
+            position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+            z-index: 3;
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            opacity: 0.45;
+            animation: scrollBob 2.5s ease-in-out infinite;
+        }
+        .hero-scroll-cue span { font-size: 0.65rem; letter-spacing: 3px; text-transform: uppercase; color: #F5F0E8; }
+        .hero-scroll-cue svg { width: 16px; height: 16px; color: #F5F0E8; }
+        @keyframes scrollBob { 0%,100%{transform:translateX(-50%) translateY(0);} 50%{transform:translateX(-50%) translateY(6px);} }
+
+        /* ===== Section headings ===== */
+        .section-header {
+            display: flex; align-items: baseline; justify-content: space-between;
+            margin-bottom: 28px; padding: 0 4px;
+        }
+        .section-title {
+            font-size: 1.5rem; font-weight: 700; letter-spacing: -0.03em;
+        }
+        .section-sub {
+            font-size: 0.82rem; color: var(--text-muted);
+            letter-spacing: 0.01em;
+        }
+
+        /* ===== Infinite Marquee Carousel ===== */
+        .events-section {
+            max-width: 100%; width: 100%;
+            padding: 60px 0 40px;
+            position: relative; z-index: 4;
+            overflow: visible;
+        }
+        .events-section-inner { padding: 0 40px; margin-bottom: 24px; }
+
+        .marquee-wrapper {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: var(--marquee-gap);
+            width: max-content;
+            animation: marqueeScroll 38s linear infinite;
+            cursor: default;
+        }
+        .marquee-track.paused { animation-play-state: paused; }
+
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-33.333%); }
+        }
+
+        .marquee-fade-l, .marquee-fade-r {
+            position: absolute; top: 0; bottom: 0; width: 100px; z-index: 2; pointer-events: none;
+        }
+        .marquee-fade-l { left: 0; background: linear-gradient(to right, var(--bg) 0%, transparent 100%); }
+        .marquee-fade-r { right: 0; background: linear-gradient(to left, var(--bg) 0%, transparent 100%); }
+
+        .event-card {
+            flex: 0 0 360px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: var(--shadow-card);
+            transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s, border-color 0.3s;
+            position: relative;
+        }
+        .event-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: var(--shadow-lg), 0 0 0 1px var(--accent);
+            border-color: var(--accent);
+            z-index: 10;
+        }
+        .event-card-img-wrap {
+            position: relative; overflow: hidden; height: 210px;
+            border-radius: 20px 20px 0 0; /* pre-clip corners so no flash */
+        }
+        .event-card img {
+            width: 100%; height: 100%; object-fit: cover;
+            border-radius: 0; /* let parent clip */
+            will-change: transform;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .event-card:hover img { transform: scale(1.08); }
+        .event-card-badge {
+            position: absolute; top: 14px; left: 14px;
+            background: rgba(0,0,0,0.55); backdrop-filter: blur(8px);
+            color: #fff; padding: 5px 13px;
+            border-radius: var(--radius-pill);
+            font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        .event-card-body { padding: 20px; }
+        .event-card-title { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 4px; }
+        .event-card-desc { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+        .event-card-meta {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: 14px; padding-top: 14px;
+            border-top: 1px solid var(--border-subtle);
+        }
+        .event-meta-tag {
+            font-size: 0.72rem; font-weight: 600;
+            background: var(--item-bg); color: var(--text-secondary);
+            padding: 4px 10px; border-radius: var(--radius-pill);
+            border: 1px solid var(--border-subtle);
+        }
+        .event-meta-tag.gold { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+        /* New event card distinctive style */
+        .event-card.is-new {
+            border-color: var(--accent-light);
+            background: linear-gradient(145deg, var(--card-bg) 0%, rgba(200,169,110,0.04) 100%);
+        }
+        .event-card.is-new::before {
+            content: 'НОВОЕ';
+            position: absolute; top: 14px; right: 14px; z-index: 3;
+            background: var(--accent);
+            color: #fff;
+            font-size: 0.58rem; font-weight: 800; letter-spacing: 2.5px;
+            padding: 4px 9px; border-radius: var(--radius-pill);
+            box-shadow: 0 2px 8px rgba(200,169,110,0.4);
+        }
+        .event-card.is-new .event-card-title {
+            color: var(--text);
+        }
+        .event-card.is-new .event-card-body {
+            border-top: 2px solid var(--accent-light);
+        }
+        .event-card.is-new .event-meta-tag {
+            background: var(--accent-light); color: var(--accent-hover);
+            border-color: var(--accent);
+        }
+
+        /* New event extra info row */
+        .event-card-extra {
+            display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px;
+        }
+        .event-extra-tag {
+            font-size: 0.7rem; font-weight: 600;
+            color: var(--text-muted); background: var(--item-bg);
+            padding: 3px 8px; border-radius: var(--radius-pill);
+            border: 1px solid var(--border-subtle);
+            display: flex; align-items: center; gap: 3px;
+        }
+
+        /* ===== Cards Grid ===== */
+        .scenarios-section {
+            max-width: 1440px; width: 100%;
+            padding: 20px 40px 80px;
+            position: relative; z-index: 2;
+        }
+
+        .filter-bar {
+            display: flex; gap: 10px; margin-bottom: 32px;
+            flex-wrap: wrap; align-items: center;
+        }
+        .filter-pill {
+            display: flex; align-items: center; gap: 6px;
+            background: var(--card-bg);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-pill);
+            padding: 9px 18px;
+            font-family: var(--font); font-size: 0.82rem; font-weight: 600;
+            color: var(--text); cursor: pointer;
+            transition: all 0.22s;
+            position: relative;
+        }
+        .filter-pill:hover { border-color: var(--accent); color: var(--accent); }
+        .filter-pill.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+        .dark-theme .filter-pill.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+        .filter-reset {
+            width: 18px; height: 18px; border-radius: 50%;
+            background: var(--accent); color: #fff;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 10px; cursor: pointer; margin-left: 2px; flex-shrink: 0;
+        }
+
+        .dropdown {
+            position: absolute; top: calc(100% + 8px); left: 0;
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: var(--radius-sm); box-shadow: var(--shadow-lg);
+            padding: 6px; min-width: 200px; z-index: 100;
+            display: none; flex-direction: column;
+        }
+        .dropdown.show { display: flex; }
+        .dropdown button {
+            background: none; border: none;
+            padding: 9px 14px; border-radius: 9px;
+            text-align: left; font-family: var(--font); font-size: 0.84rem;
+            font-weight: 500; color: var(--text); cursor: pointer;
+            transition: background 0.15s;
+        }
+        .dropdown button:hover { background: var(--item-bg); }
+
+        #activeFilters { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+        .filter-tag {
+            background: var(--accent); color: #fff;
+            padding: 4px 12px; border-radius: var(--radius-pill);
+            font-size: 0.76rem; font-weight: 600;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .filter-tag .remove-tag { cursor: pointer; opacity: 0.8; font-weight: bold; }
+        .filter-tag .remove-tag:hover { opacity: 1; }
+
+        /* ===== Masonry cards ===== */
+        .cards-grid {
+            display: flex; gap: 20px; align-items: flex-start;
+        }
+        .card-col { flex: 1; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow-card);
+            overflow: hidden;
+            transition:
+                border-color 0.3s,
+                box-shadow 0.3s,
+                transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1.2),
+                opacity 0.6s ease;
+            opacity: 0;
+            transform: translateY(28px);
+        }
+        .card.revealed { opacity: 1; transform: translateY(0); }
+        .card:hover {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-lg), 0 0 0 1px var(--accent-light);
+            transform: scale(1.015) translateY(-3px);
+        }
+        .card.expanded { box-shadow: var(--shadow-lg), 0 0 0 1.5px var(--accent); border-color: var(--accent); }
+
+        .card-img-wrap {
+            position: relative; overflow: hidden;
+            border-radius: var(--radius) var(--radius) 0 0; /* pre-clip to prevent flash */
+        }
+        .card-img {
+            width: 100%; height: 200px; object-fit: cover; display: block;
+            will-change: transform;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .card:hover .card-img { transform: scale(1.06); }
+
+        /* Elegant serial number — subtle but readable */
+        .card-num {
+            position: absolute; bottom: 12px; right: 14px;
+            font-size: 1.1rem; font-weight: 700; line-height: 1;
+            letter-spacing: -0.03em;
+            color: rgba(255,255,255,0.55);
+            font-family: var(--font);
+            pointer-events: none;
+            user-select: none;
+            background: rgba(0,0,0,0.28);
+            backdrop-filter: blur(4px);
+            border-radius: 8px;
+            padding: 4px 9px;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+        .card-category-chips {
+            position: absolute; top: 14px; left: 14px;
+            display: flex; gap: 6px;
+        }
+        .cat-chip {
+            background: rgba(0,0,0,0.5); backdrop-filter: blur(6px);
+            color: rgba(255,255,255,0.85);
+            padding: 3px 10px; border-radius: var(--radius-pill);
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .card-body { padding: 18px 18px 14px; }
+
+        .card-top {
+            display: flex; align-items: flex-start; gap: 10px; margin-bottom: 6px;
+        }
+        .card-icon-wrap {
+            width: 38px; height: 38px; border-radius: 10px;
+            background: var(--item-bg);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; flex-shrink: 0;
+            transition: background 0.2s, transform 0.55s cubic-bezier(0.34, 1.2, 0.64, 1);
+            color: var(--accent);
+            perspective: 200px;
+            transform-style: preserve-3d;
+        }
+        .card:hover .card-icon-wrap {
+            background: var(--accent-light);
+            transform: rotateY(180deg);
+        }
+
+        .card-title-wrap { flex: 1; min-width: 0; }
+        .card-title {
+            font-size: 1.18rem; font-weight: 700; letter-spacing: -0.025em;
+            cursor: pointer; line-height: 1.2;
+            transition: color 0.2s;
+        }
+        .card-title:hover { color: var(--accent); }
+
+        /* Make the whole card clickable */
+        .card { cursor: pointer; }
+
+        .card-subtitle {
+            font-size: 0.80rem; color: var(--text-secondary);
+            margin-top: 2px; line-height: 1.4;
+        }
+
+        .card-meta-row {
+            display: flex; align-items: center; gap: 6px;
+            flex-wrap: wrap; margin-top: 10px;
+        }
+        .meta-pill {
+            font-size: 0.72rem; font-weight: 600;
+            background: var(--item-bg); color: var(--text-secondary);
+            padding: 4px 10px; border-radius: var(--radius-pill);
+            border: 1px solid var(--border-subtle);
+            display: flex; align-items: center; gap: 4px;
+        }
+        .meta-pill.accent { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .meta-pill.green { background: #d1fae5; color: #065f46; border-color: #a7f3d0; }
+        .dark-theme .meta-pill.green { background: #064e3b; color: #6ee7b7; border-color: #065f46; }
+
+        .card-footer {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-top: 12px; padding-top: 12px;
+            border-top: 1px solid var(--border-subtle);
+        }
+        .location-line {
+            font-size: 0.75rem; color: var(--text-muted);
+            display: flex; align-items: center; gap: 4px;
+        }
+        .location-line svg { width: 11px; height: 11px; flex-shrink: 0; }
+
+        .card-actions {
+            display: flex; align-items: center; gap: 6px;
+        }
+
+        /* Elegant SVG icon buttons */
+        .icon-btn {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            background: var(--card-bg);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            flex-shrink: 0;
+        }
+        .icon-btn svg { width: 15px; height: 15px; transition: all 0.2s; }
+        .icon-btn:hover { border-color: var(--accent); background: var(--accent-light); transform: scale(1.12); }
+        .icon-btn:active { transform: scale(0.92); }
+
+        /* Heart button */
+        .heart-btn svg { stroke: var(--text-muted); fill: none; }
+        .heart-btn:hover svg { stroke: #E07A5F; }
+        .heart-btn.favorited { border-color: #E07A5F; background: #FEF2F2; }
+        .heart-btn.favorited svg { stroke: #E07A5F; fill: #E07A5F; }
+        .dark-theme .heart-btn.favorited { background: #3B1010; }
+
+        /* Bookmark button */
+        .bookmark-btn svg { stroke: var(--text-muted); fill: none; }
+        .bookmark-btn:hover svg { stroke: var(--accent); }
+        .bookmark-btn.wishlisted { border-color: var(--accent); background: var(--accent-light); }
+        .bookmark-btn.wishlisted svg { stroke: var(--accent); fill: var(--accent); }
+
+        /* Expand arrow */
+        .expand-btn {
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            border: 1.5px solid var(--border);
+            background: var(--card-bg);
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .expand-btn svg { width: 13px; height: 13px; stroke: var(--text-secondary); transition: transform 0.4s, stroke 0.2s; }
+        .expand-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+        .card.expanded .expand-btn { background: var(--accent); border-color: var(--accent); }
+        .card.expanded .expand-btn svg { transform: rotate(180deg); stroke: #fff; }
+
+        /* Expanded body */
+        .card-expand-body {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.55s cubic-bezier(0.4, 0, 0.2, 1), padding 0.4s;
+            padding: 0 18px;
+        }
+        .card.expanded .card-expand-body {
+            max-height: 2400px;
+            padding: 0 18px 18px;
+        }
+
+        .places-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 12px; position: relative; }
+        .places-list::before {
+            content: '';
+            position: absolute; left: 18px; top: 30px; bottom: 30px;
+            width: 1px; background: linear-gradient(to bottom, var(--accent), transparent);
+            z-index: 0;
+        }
+
+        .place-item {
+            background: var(--card-bg);
+            border-radius: var(--radius-sm);
+            padding: 14px 16px 14px 54px;
+            border: 1px solid var(--border-subtle);
+            display: flex; flex-direction: column; gap: 3px;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            position: relative;
+            margin-bottom: 8px;
+        }
+        .place-item::before {
+            content: attr(data-step);
+            position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+            width: 24px; height: 24px; border-radius: 50%;
+            background: var(--accent); color: #fff;
+            font-size: 0.68rem; font-weight: 800;
+            display: flex; align-items: center; justify-content: center;
+            z-index: 1; flex-shrink: 0;
+            box-shadow: 0 0 0 3px var(--card-bg);
+        }
+        .place-item:hover { transform: translateX(4px); box-shadow: var(--shadow-sm); border-color: var(--accent-light); }
+
+        .place-step {
+            font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--accent); margin-bottom: 1px;
+        }
+        .place-name { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; }
+        .place-desc { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.45; }
+        .place-row {
+            display: flex; gap: 12px; flex-wrap: wrap;
+            font-size: 0.72rem; color: var(--text-muted); margin-top: 4px;
+        }
+        .place-row span { display: flex; align-items: center; gap: 3px; }
+        .place-why {
+            font-size: 0.76rem; color: var(--accent-hover); font-style: italic;
+            margin-top: 3px; padding-top: 4px; border-top: 1px solid var(--border-subtle);
+        }
+
+        .expand-total {
+            text-align: right; font-weight: 700; font-size: 0.85rem;
+            color: var(--accent); padding: 8px 0 12px;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 4px;
+        }
+
+        .history-note {
+            background: var(--item-bg); border-radius: var(--radius-sm);
+            padding: 14px 16px; margin-bottom: 12px;
+            font-size: 0.82rem; color: var(--text-secondary);
+            font-style: italic; border: 1px solid var(--border-subtle);
+            line-height: 1.55;
+        }
+
+        .route-guide {
+            background: var(--item-bg); border-radius: var(--radius-sm);
+            padding: 14px 16px; margin-bottom: 12px;
+            font-size: 0.82rem; color: var(--text-secondary);
+            border-left: 3px solid var(--gold);
+        }
+        .route-guide strong { display: block; color: var(--text); margin-bottom: 6px; font-size: 0.78rem; letter-spacing: 1px; text-transform: uppercase; }
+
+        .tips-grid {
+            display: flex; gap: 6px; flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        .tip-tag {
+            background: var(--item-bg); border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-pill); padding: 4px 10px;
+            font-size: 0.74rem; color: var(--text-secondary);
+        }
+
+        .detail-btn {
+            display: inline-flex; align-items: center; gap: 7px;
+            padding: 10px 20px; background: var(--text); color: var(--bg);
+            border-radius: var(--radius-pill); font-weight: 600; font-size: 0.82rem;
+            cursor: pointer; border: none; font-family: var(--font);
+            transition: all 0.22s; margin-right: 8px;
+        }
+        .detail-btn:hover { background: var(--accent); }
+
+        .collapse-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 10px 16px; background: transparent;
+            border: 1.5px solid var(--border); color: var(--text-secondary);
+            border-radius: var(--radius-pill); font-size: 0.8rem; font-weight: 600;
+            cursor: pointer; font-family: var(--font); transition: all 0.2s;
+        }
+        .collapse-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+        /* ===== Modals ===== */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5); z-index: 2000;
+            justify-content: center; align-items: center;
+            backdrop-filter: blur(6px);
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal {
+            background: var(--card-bg);
+            border-radius: 28px; padding: 32px;
+            max-width: 680px; width: 90%; max-height: 88vh;
+            overflow-y: auto;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.20), 0 0 0 1px var(--border);
+            animation: modalIn 0.35s cubic-bezier(0.34, 1.2, 0.64, 1);
+        }
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.92) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal h2 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 24px; color: var(--text); }
+        .modal input, .modal textarea, .modal select {
+            width: 100%; padding: 13px 15px; margin-bottom: 12px;
+            border-radius: var(--radius-sm); border: 1.5px solid var(--border);
+            background: var(--bg); color: var(--text);
+            font-family: var(--font); font-size: 0.88rem;
+            transition: border-color 0.2s;
+        }
+        .modal input:focus, .modal textarea:focus { border-color: var(--accent); outline: none; }
+        .modal button {
+            width: 100%; padding: 13px; margin-bottom: 8px;
+            background: var(--text); color: var(--bg);
+            border: none; border-radius: var(--radius-pill);
+            font-weight: 700; font-size: 0.9rem; cursor: pointer;
+            font-family: var(--font); transition: all 0.22s;
+        }
+        .modal button:hover { background: var(--accent); }
+        .modal .close-btn { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
+        .modal .close-btn:hover { border-color: var(--accent); color: var(--accent); background: transparent; }
+        .modal .btn-danger { background: #DC2626; }
+        .modal .btn-danger:hover { background: #B91C1C; }
+
+        /* Favorites grid in modal */
+        .favorites-grid { display: flex; flex-wrap: wrap; gap: 16px; max-height: 56vh; overflow-y: auto; padding-right: 4px; }
+        .fav-item {
+            background: var(--item-bg); border-radius: 18px;
+            padding: 18px; border: 1px solid var(--border);
+            flex: 1 1 260px; display: flex; flex-direction: column;
+        }
+        .fav-item strong a { color: var(--accent); text-decoration: none; font-size: 1.05rem; font-weight: 700; }
+        .fav-item label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; color: var(--text-muted); margin: 10px 0 4px; }
+        .fav-item input[type="date"], .fav-item textarea {
+            width: 100%; padding: 9px 12px;
+            border-radius: 9px; border: 1.5px solid var(--border);
+            background: var(--card-bg); color: var(--text);
+            font-family: var(--font); font-size: 0.84rem;
+        }
+        .fav-item textarea { min-height: 64px; resize: none; }
+        .remove-btn {
+            align-self: flex-start; margin-top: 12px;
+            padding: 7px 15px;
+            background: transparent; color: #DC2626;
+            border: 1.5px solid #FECACA; border-radius: var(--radius-pill);
+            cursor: pointer; font-weight: 600; font-size: 0.78rem;
+            font-family: var(--font); transition: all 0.2s;
+        }
+        .remove-btn:hover { background: #FEF2F2; }
+        .dark-theme .remove-btn { border-color: #5C1A1A; color: #F87171; }
+        .dark-theme .remove-btn:hover { background: #2D1010; }
+
+        /* Admin */
+        .admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; }
+        .admin-tabs button {
+            flex: 1; padding: 11px;
+            background: var(--item-bg); border: 1.5px solid var(--border);
+            border-radius: var(--radius-pill); font-weight: 600; cursor: pointer;
+            color: var(--text); font-family: var(--font);
+        }
+        .admin-tabs button.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+        .dark-theme .admin-tabs button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+        .admin-list { display: flex; flex-direction: column; gap: 10px; max-height: 50vh; overflow-y: auto; }
+        .admin-item {
+            background: var(--item-bg); border-radius: 14px; padding: 14px;
+            border: 1px solid var(--border); display: flex;
+            justify-content: space-between; align-items: center; flex-wrap: wrap;
+        }
+        .admin-item-info { flex: 1; margin-right: 12px; }
+        .admin-item-info strong { font-size: 1rem; }
+        .admin-item-info small { display: block; color: var(--text-muted); font-size: 0.74rem; }
+        .admin-item-actions { display: flex; gap: 6px; }
+        .admin-item-actions button { padding: 6px 12px; border-radius: var(--radius-pill); border: none; font-weight: 600; cursor: pointer; font-family: var(--font); }
+        .btn-edit { background: #FEF3C7; color: #92400E; }
+        .btn-delete { background: #FEE2E2; color: #991B1B; }
+        .btn-add { background: var(--accent); color: #fff; padding: 10px 20px; border-radius: var(--radius-pill); border: none; font-weight: 700; cursor: pointer; margin-bottom: 16px; font-family: var(--font); }
+        .form-row { display: flex; gap: 10px; flex-wrap: wrap; }
+        .form-row > * { flex: 1; min-width: 180px; }
+        .place-entry { background: var(--item-bg); border-radius: 12px; padding: 12px; margin-bottom: 10px; border: 1px solid var(--border); }
+        .place-entry .remove-place { background: #FEE2E2; color: #991B1B; border: none; border-radius: var(--radius-pill); padding: 4px 10px; cursor: pointer; float: right; font-family: var(--font); }
+        .data-actions { display: flex; gap: 10px; margin: 18px 0; flex-wrap: wrap; }
+        .data-actions button { padding: 9px 18px; border-radius: var(--radius-pill); border: none; font-weight: 600; cursor: pointer; font-family: var(--font); }
+        .btn-export { background: var(--accent); color: #fff; }
+        .btn-import { background: var(--item-bg); color: var(--text); border: 1.5px solid var(--border); }
+
+        /* ===== Footer ===== */
+        .site-footer {
+            width: 100%; padding: 48px 40px 32px;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 20px;
+            display: flex; flex-direction: column; align-items: center; gap: 16px;
+        }
+        .footer-brand { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.03em; color: var(--text-muted); }
+        .footer-brand span { color: var(--accent); }
+        .footer-contact {
+            font-size: 0.8rem; color: var(--text-muted);
+            display: flex; gap: 24px; flex-wrap: wrap; justify-content: center;
+        }
+        .footer-contact a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+        .footer-contact a:hover { color: var(--accent); }
+        .footer-copy { font-size: 0.72rem; color: var(--text-muted); opacity: 0.6; }
+
+        /* ===== Animations ===== */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-content > * {
+            animation: fadeUp 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+        }
+        .hero-eyebrow { animation-delay: 0.1s; }
+        .hero h1 { animation-delay: 0.25s; }
+        .hero-subtitle { animation-delay: 0.4s; }
+        .hero-stats { animation-delay: 0.55s; }
+
+        /* Shimmer on hero title gold letter */
+        @keyframes goldShimmer {
+            0% { text-shadow: 0 0 80px rgba(200,169,110,0.6); }
+            50% { text-shadow: 0 0 120px rgba(200,169,110,0.9), 0 0 40px rgba(230,200,140,0.4); }
+            100% { text-shadow: 0 0 80px rgba(200,169,110,0.6); }
+        }
+        .hero h1 .gold-letter { animation: goldShimmer 3.5s ease-in-out infinite; }
+
+        /* Section fade-in */
+        @keyframes sectionReveal {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .section-header {
+            animation: sectionReveal 0.6s ease both;
+        }
+
+        /* Stat counter pulse */
+        .hero-stat-num {
+            transition: transform 0.3s;
+        }
+        .hero-stat:hover .hero-stat-num { transform: scale(1.08); }
+
+        /* Card icon SVG icons */
+        .card-icon-svg {
+            width: 18px; height: 18px;
+            stroke: var(--accent); fill: none;
+            stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+        }
+
+        /* Floating accent orb behind events section */
+        .events-section::before {
+            content: '';
+            position: absolute; top: -60px; right: -100px;
+            width: 400px; height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(200,169,110,0.06) 0%, transparent 70%);
+            pointer-events: none; z-index: -1;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 1024px) {
+            .cards-grid { flex-direction: column; }
+            .card-col { flex-direction: row; flex-wrap: wrap; }
+            .card-col .card { flex: 1 1 320px; }
+        }
+        @media (max-width: 768px) {
+            .top-nav { padding: 0 20px; height: 60px; }
+            .hero { background-attachment: scroll; padding-bottom: 100px; }
+            .hero h1 { font-size: 4rem; }
+            .hero-stats { gap: 28px; }
+            .events-section { padding: 40px 0 24px; }
+            .events-section-inner { padding: 0 20px; }
+            .scenarios-section { padding: 16px 20px 60px; }
+            .site-footer { padding: 36px 20px 24px; }
+            .event-card { flex: 0 0 300px; }
+        }
+        @media (max-width: 480px) {
+            .hero-stats { gap: 18px; }
+            .hero-stat-num { font-size: 1.4rem; }
+            .hero-stat-divider { height: 28px; }
+            .nav-actions > .nav-btn-ghost { display: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .marquee-track { animation: none; }
+            *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+        }
+    
+/* ===== VISUAL DECORATIONS ===== */
+/* Decorative golden line accent under section titles */
+.section-title {
+    position: relative;
+    padding-bottom: 6px;
+}
+.section-title::after {
+    content: '';
+    position: absolute;
+    left: 0; bottom: 0;
+    width: 32px; height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+    opacity: 0.7;
+}
+
+/* Golden shimmer orb next to hero h1 */
+.hero-content::before {
+    content: '';
+    position: absolute;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(200,169,110,0.18) 0%, transparent 70%);
+    top: -80px; right: -60px;
+    pointer-events: none;
+    animation: orbPulse 6s ease-in-out infinite alternate;
+}
+@keyframes orbPulse {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.3); opacity: 1; }
+}
+
+/* Elegant hover glow on event cards — subtle gold box-shadow, no overlay */
+.event-card:hover {
+    box-shadow: var(--shadow-lg), 0 0 0 1.5px var(--accent), 0 0 20px rgba(200,169,110,0.15);
+}
+
+/* Card shimmer lines */
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -75%;
+    width: 50%; height: 100%;
+    background: linear-gradient(to right, transparent 0%, rgba(200,169,110,0.06) 50%, transparent 100%);
+    transform: skewX(-15deg);
+    pointer-events: none;
+    z-index: 0;
+    transition: left 0.7s ease;
+}
+.card:hover::before {
+    left: 125%;
+}
+
+/* Scenario section decorative top gradient bar — very subtle */
+.scenarios-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 5%, var(--accent) 40%, var(--gold-light) 50%, var(--accent) 60%, transparent 95%);
+    opacity: 0.18;
+    border-radius: var(--radius) var(--radius) 0 0;
+}
+
+/* Add golden dot before event card badge */
+.event-card-badge::before {
+    content: '◆';
+    font-size: 0.5rem;
+    margin-right: 5px;
+    color: var(--accent);
+    opacity: 0.8;
+}
+
+/* Hero eyebrow animated glow */
+.hero-eyebrow {
+    animation: eyebrowGlow 4s ease-in-out infinite alternate;
+}
+@keyframes eyebrowGlow {
+    0% { text-shadow: none; }
+    100% { text-shadow: 0 0 20px rgba(200,169,110,0.4); }
+}
+
+/* Card footer border gradient */
+.card-footer {
+    background: linear-gradient(to right, transparent, rgba(200,169,110,0.04), transparent);
+}
+
+/* Floating particles in hero */
+.hero-particle {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: 0;
+    pointer-events: none;
+    animation: particleFloat 8s ease-in-out infinite;
+}
+@keyframes particleFloat {
+    0% { opacity: 0; transform: translateY(0) scale(0.5); }
+    20% { opacity: 0.4; }
+    80% { opacity: 0.2; }
+    100% { opacity: 0; transform: translateY(-120px) scale(1); }
+}
+
+/* Scenarios section position */
+.scenarios-section { position: relative; }
+
+/* Decorative corner accent on card */
+.card-img-wrap::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(to top, rgba(0,0,0,0.28), transparent);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Nav brand glow on hover */
+.nav-brand:hover .nav-brand-dot {
+    text-shadow: 0 0 16px rgba(200,169,110,0.8);
+}
+
+/* Event card body top accent line for is-new */
+.event-card.is-new .event-card-body {
+    border-top: 1px solid var(--accent-light);
+    position: relative;
+}
+
+/* ===== MOBILE OPTIMIZATION ===== */
+@media (max-width: 768px) {
+    .top-nav { padding: 0 16px; height: 58px; }
+    .nav-brand { font-size: 1.05rem; gap: 8px; }
+    .nav-brand img { height: 28px; width: 28px; }
+    .nav-actions { gap: 6px; }
+    .nav-btn-ghost { display: none; }
+    .nav-btn-primary { padding: 8px 14px; font-size: 0.8rem; }
+    .theme-toggle { width: 34px; height: 34px; }
+
+    .hero { background-attachment: scroll; padding-bottom: 80px; min-height: 85vh; }
+    .hero h1 { font-size: clamp(3rem, 13vw, 5rem); }
+    .hero-subtitle { font-size: 0.82rem; letter-spacing: 2.5px; }
+    .hero-stats { gap: 20px; }
+    .hero-stat-num { font-size: 1.5rem; }
+    .hero-stat-label { font-size: 0.65rem; }
+    .hero-stat-divider { height: 28px; }
+    .hero-eyebrow { font-size: 0.65rem; letter-spacing: 3px; }
+
+    .events-section { padding: 32px 0 20px; }
+    .events-section-inner { padding: 0 16px; margin-bottom: 16px; }
+    .section-header { flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+    .section-title { font-size: 1.3rem; }
+
+    .event-card { flex: 0 0 280px; }
+    .event-card-img-wrap { height: 180px; }
+    .event-card-body { padding: 14px; }
+    .event-card-title { font-size: 0.95rem; }
+    .event-card-desc { font-size: 0.78rem; }
+
+    .scenarios-section { padding: 16px 14px 50px; border-radius: 20px; }
+    .filter-bar { gap: 7px; margin-bottom: 20px; }
+    .filter-pill { padding: 8px 14px; font-size: 0.78rem; }
+
+    .cards-grid { flex-direction: column; gap: 14px; }
+    .card-col { gap: 14px; }
+    .card-img { height: 180px; }
+    .card-body { padding: 14px 14px 12px; }
+    .card-title { font-size: 1.05rem; }
+    .card-subtitle { font-size: 0.76rem; }
+    .meta-pill { font-size: 0.68rem; padding: 3px 8px; }
+    .location-line { font-size: 0.7rem; }
+    .icon-btn, .expand-btn { width: 30px; height: 30px; }
+    .icon-btn svg { width: 13px; height: 13px; }
+
+    .modal { padding: 22px 18px; border-radius: 20px; }
+    .modal h2 { font-size: 1.2rem; }
+
+    .site-footer { padding: 28px 16px 20px; }
+    .footer-contact { gap: 14px; font-size: 0.75rem; }
+
+    .marquee-fade-l, .marquee-fade-r { width: 50px; }
+}
+
+@media (max-width: 480px) {
+    .top-nav { padding: 0 12px; height: 54px; }
+    .nav-brand { font-size: 0.95rem; }
+    .nav-btn-primary { padding: 7px 12px; font-size: 0.76rem; }
+
+    .hero h1 { font-size: clamp(2.5rem, 14vw, 4rem); }
+    .hero-stats { gap: 14px; }
+    .hero-stat-num { font-size: 1.3rem; }
+    .hero-stat-divider { height: 24px; }
+    .hero-content { padding: 0 16px; }
+
+    .event-card { flex: 0 0 250px; }
+    .event-card-img-wrap { height: 160px; }
+
+    .scenarios-section { padding: 12px 10px 40px; }
+    .filter-bar { gap: 6px; }
+    .filter-pill { padding: 7px 12px; font-size: 0.74rem; }
+
+    .card-meta-row { gap: 4px; }
+    .meta-pill { font-size: 0.65rem; padding: 3px 7px; }
+    .card-actions { gap: 4px; }
+
+    .place-item { padding: 12px 12px 12px 44px; }
+    .place-name { font-size: 0.92rem; }
+    .place-desc { font-size: 0.76rem; }
+}
+
+/* Touch-friendly tap targets on mobile */
+@media (hover: none) {
+    .icon-btn, .expand-btn { width: 38px; height: 38px; }
+    .card-actions { gap: 8px; }
+    .nav-btn, .filter-pill { min-height: 40px; }
+
+    /* On touch devices, disable hover shimmer and animations */
+    .card::before { display: none; }
+    .event-card:hover { transform: none !important; box-shadow: var(--shadow-card) !important; }
+    .event-card:hover .event-card-img-wrap img { transform: none !important; }
+    .card:hover { transform: none !important; }
+    .card:hover .card-img { transform: none !important; }
+}
+
+/* Prevent any horizontal overflow */
+html { overflow-x: hidden; }
+body { overflow-x: hidden; max-width: 100vw; }
+
+/* Landscape phone optimization */
+@media (max-width: 768px) and (orientation: landscape) {
+    .hero { min-height: 95vh; }
+    .hero h1 { font-size: clamp(2.8rem, 8vw, 4rem); }
+}
+
+/* Extra small screen stability */
+@media (max-width: 480px) {
+    .nav-btn-ghost { display: none !important; }
+    .cards-grid { flex-direction: column; }
+    .card-col { width: 100%; min-width: 0; flex: none; }
+    .card { width: 100%; box-sizing: border-box; }
+    .filter-bar { gap: 6px; overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+    .filter-bar::-webkit-scrollbar { display: none; }
+}
+    
+/* FIX PACK v2 */
+/* marquee-wrapper: clip horizontally only, let cards lift freely on hover */
+.marquee-wrapper{
+    padding-top:30px;
+    padding-bottom:8px;
+    overflow:hidden;          /* fallback */
+    overflow-x:clip;          /* modern: clip left/right only */
+    overflow-y:visible;       /* let hover lift show above */
+}
+.marquee-track{padding:4px 0}
+.event-card,.card{will-change:transform}
+.event-card:hover{transform:translateY(-10px) scale(1.03) rotate(-1.2deg);z-index:10}
+.event-card:hover .event-card-img-wrap img{transform:scale(1.1) rotate(-3deg)}
+.card:hover .card-img{transform:scale(1.08) rotate(2deg)}
+.scenarios-section{
+ background:
+ linear-gradient(180deg, rgba(200,169,110,.08), transparent 25%),
+ radial-gradient(circle at top right, rgba(200,169,110,.12), transparent 35%);
+ border-radius:32px;
+}
+.nav-btn,.icon-btn,.expand-btn{backface-visibility:hidden;transform:translateZ(0)}
+
+/* Cards are directly clickable via onclick on card element */
+.card { position: relative; cursor: pointer; }
+
+</style>
+</head>
+<body>
+
+    <!-- ===== NAV ===== -->
+    <nav class="top-nav" id="topNav">
+        <div class="nav-brand" id="adminTrigger" title="Двойной клик для управления">
+            <img src="https://i.ibb.co/fd5Whck7/photo-2026-06-18-22-46-10.jpg" alt="Спутник" />
+            Спутник
+        </div>
+        <div class="nav-actions">
+            <!-- Favorites -->
+            <button class="nav-btn nav-btn-ghost" onclick="openFavorites()" title="Избранное">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+                Избранное <span class="nav-count" id="favCount">0</span>
+            </button>
+            <!-- Wishlist -->
+            <button class="nav-btn nav-btn-ghost" onclick="openWishlist()" title="Хочу побывать">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                </svg>
+                Сохранить <span class="nav-count" id="wishCount">0</span>
+            </button>
+            <button class="nav-btn nav-btn-primary" id="authBtn" onclick="handleAuth()">Войти</button>
+            <span id="userGreeting"></span>
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeToggle" title="Сменить тему">
+                <!-- Light mode: show moon (click→dark). Dark mode: show sun (click→light) -->
+                <svg id="themeIconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:block;transition:all 0.3s;">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+                <svg id="themeIconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none;transition:all 0.3s;">
+                    <circle cx="12" cy="12" r="4.5"/>
+                    <line x1="12" y1="2" x2="12" y2="5"/>
+                    <line x1="12" y1="19" x2="12" y2="22"/>
+                    <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
+                    <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+                    <line x1="2" y1="12" x2="5" y2="12"/>
+                    <line x1="19" y1="12" x2="22" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/>
+                    <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ===== MODALS ===== -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <h2 id="authModalTitle">Вход</h2>
+            <input type="text" id="authName" placeholder="Ваше имя" />
+            <input type="email" id="authEmail" placeholder="Email" />
+            <input type="password" id="authPassword" placeholder="Пароль" />
+            <button onclick="submitAuth()">Войти</button>
+            <button class="close-btn" onclick="closeAuth()">Отмена</button>
+            <p style="font-size:0.82rem;margin-top:10px;cursor:pointer;color:var(--text-secondary);" onclick="toggleAuthMode()">Нет аккаунта? Зарегистрироваться →</p>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="favoritesModal">
+        <div class="modal">
+            <h2>
+                <svg style="display:inline;width:20px;height:20px;vertical-align:-3px;margin-right:8px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                Избранное
+            </h2>
+            <div class="favorites-grid" id="favoritesList"></div>
+            <button class="close-btn" style="margin-top:16px;" onclick="closeFavorites()">Закрыть</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="wishlistModal">
+        <div class="modal">
+            <h2>
+                <svg style="display:inline;width:20px;height:20px;vertical-align:-3px;margin-right:8px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                Хочу побывать
+            </h2>
+            <div class="favorites-grid" id="wishlistList"></div>
+            <button class="close-btn" style="margin-top:16px;" onclick="closeWishlist()">Закрыть</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="adminPasswordModal">
+        <div class="modal" style="max-width:400px;">
+            <h2>🔐 Доступ к управлению</h2>
+            <p style="margin-bottom:16px;color:var(--text-secondary);font-size:0.88rem;">Введите пароль администратора:</p>
+            <input type="password" id="adminPasswordInput" placeholder="Пароль" onkeydown="if(event.key==='Enter') checkAdminPassword()" />
+            <button onclick="checkAdminPassword()">Подтвердить</button>
+            <button class="close-btn" onclick="closeAdminPassword()">Отмена</button>
+            <div id="adminPasswordError" style="color:#DC2626;margin-top:8px;display:none;font-size:0.84rem;">Неверный пароль</div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="adminModal">
+        <div class="modal" style="max-width:900px;">
+            <h2>Управление базой</h2>
+            <div class="admin-tabs">
+                <button class="active" data-tab="events" onclick="switchAdminTab('events')">События</button>
+                <button data-tab="routes" onclick="switchAdminTab('routes')">Маршруты</button>
+            </div>
+            <div id="adminContent"></div>
+            <div class="data-actions">
+                <button class="btn-export" onclick="exportData()">↑ Экспорт</button>
+                <button class="btn-import" onclick="document.getElementById('importFileInput').click()">↓ Импорт</button>
+                <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importData(event)" />
+            </div>
+            <button class="close-btn" onclick="closeAdmin()">Закрыть</button>
+        </div>
+    </div>
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-fade"></div>
+
+        <div class="hero-scroll-cue">
+            <span>Прокрутить</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+        </div>
+
+        <div class="hero-content">
+            <h1><span class="gold-letter">С</span>путник</h1>
+            <p class="hero-subtitle">Ваш гид по Казани и региону</p>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-num">16<span>+</span></div>
+                    <div class="hero-stat-label">Маршрутов</div>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">8<span>+</span></div>
+                    <div class="hero-stat-label">Событий</div>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat">
+                    <div class="hero-stat-num">∞</div>
+                    <div class="hero-stat-label">Впечатлений</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== EVENTS MARQUEE ===== -->
+    <section class="events-section">
+        <div class="events-section-inner">
+            <div class="section-header">
+                <span class="section-title">Актуальные события</span>
+            </div>
+        </div>
+        <div class="marquee-wrapper">
+            <div class="marquee-fade-l"></div>
+            <div class="marquee-fade-r"></div>
+            <div class="marquee-track" id="eventsMarquee"></div>
+        </div>
+    </section>
+
+    <!-- ===== CARDS ===== -->
+    <section class="scenarios-section">
+        <div class="section-header">
+            <span class="section-title">Сценарии</span>
+        </div>
+
+        <div class="filter-bar" id="filterBar">
+            <div style="position:relative;">
+                <button class="filter-pill" id="sortBtn" onclick="toggleDropdown('sortDropdown')">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="3" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="13" y1="18" x2="21" y2="18"/></svg>
+                    Сортировка
+                    <span class="filter-reset" id="resetSort" style="display:none;" onclick="event.stopPropagation();resetSort()">✕</span>
+                </button>
+                <div class="dropdown" id="sortDropdown">
+                    <button onclick="applySort('popularity')">По популярности</button>
+                    <button onclick="applySort('newest')">Сначала новое</button>
+                    <button onclick="applySort('oldest')">Сначала старое</button>
+                    <button onclick="applySort('price')">Цена (возр.)</button>
+                    <button onclick="applySort('time')">Время (возр.)</button>
+                    <button onclick="applySort('distance')">Расстояние (возр.)</button>
+                </div>
+            </div>
+            <div style="position:relative;">
+                <button class="filter-pill" id="filterBtn" onclick="toggleDropdown('filterDropdown')">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+                    Фильтры
+                    <span class="filter-reset" id="resetFilter" style="display:none;" onclick="event.stopPropagation();resetFilters()">✕</span>
+                </button>
+                <div class="dropdown" id="filterDropdown" style="right:0;left:auto;">
+                    <button onclick="toggleFilter('kitchen')">🍽 Кухня</button>
+                    <button onclick="toggleFilter('entertainment')">🎭 Развлечения</button>
+                    <button onclick="toggleFilter('leisure')">🌿 Досуг</button>
+                    <button onclick="toggleFilter('workstudy')">💼 Работа/учёба</button>
+                    <button onclick="toggleFilter('culture')">🏛 Культура</button>
+                </div>
+            </div>
+            <div id="activeFilters"></div>
+        </div>
+
+        <div class="cards-grid" id="cardsGrid"></div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="site-footer">
+        <div class="footer-brand">Спутник</div>
+        <div class="footer-contact">
+            <a href="tel:+78435555555">+7 (843) 555-СПУТНИК</a>
+            <a href="mailto:privet@sputnik-tatarstan.ru">privet@sputnik-tatarstan.ru</a>
+            <span>Казань, ул. Баумана, 5</span>
+        </div>
+        <div class="footer-copy">© 2026 Спутник. Туризм в Татарстане.</div>
+    </footer>
+
+    <script>
+    (function() {
+
+    /* ===================================================
+       DATA
+    =================================================== */
+    const defaultEvents = [
+        {
+            id: 'sabantuy', title: 'Сабантуй 2026', desc: 'Национальные игры, живая музыка и татарская кухня на открытом воздухе.',
+            img: 'https://s3go.kzn.ru/local/2026-06-17/DmZ4By7KurIjNOXW.jpeg',
+            address: 'Казань, различные площадки', duration: '12 часов',
+            detail: 'Сабантуй — главный татарский праздник. Борьба курэш, скачки, мастер-классы.',
+            criteria: { time: '10:00–22:00', price: 'Вход свободный', highlight: 'Этно-музыка' },
+            history: 'Праздник плуга — наследие кочевых традиций татарского народа.',
+            article: 'Сабантуй объединяет тысячи гостей со всего мира. Главное событие — борьба курэш.',
+            tips: ['Приходите в удобной обуви', 'Попробуйте эчпочмак', 'Берите воду'],
+            coords: [55.796, 49.109]
+        },
+        {
+            id: 'tsum', title: 'Новый ЦУМ', desc: 'Исторический универмаг после реконструкции — гастропарк и локальные бренды.',
+            img: 'https://m.e-kazan.ru/upload/redactor/images/zoom/fc4f098bd930a4139508b85261b31a37.jpg',
+            address: 'ул. Баумана, 30', duration: 'Весь день',
+            detail: 'ЦУМ возвращается с гастропарком и коллекцией локальных брендов.',
+            criteria: { time: '10:00–22:00', price: 'Чек ~800 ₽', highlight: 'Гастропарк' },
+            history: 'Построен в начале XX века, реконструирован в 2026 году.',
+            article: 'После реконструкции — модное пространство нового поколения.',
+            tips: ['Посетите гастропарк', 'Ищите сувениры ручной работы'],
+            coords: [55.790, 49.113]
+        },
+        {
+            id: 'night', title: 'Ночная Казань', desc: 'Подсвеченный Кремль, набережная Казанки и световое шоу.',
+            img: 'https://avatars.mds.yandex.net/get-altay/7383884/2a00000182fe41953e61d73b9adab090bb9a/orig',
+            address: 'Кремлёвская набережная', duration: '1,5 часа',
+            detail: 'Пешая прогулка: Кремлёвская набережная, площадь Тысячелетия.',
+            criteria: { time: '21:00–22:30', price: 'Бесплатно', highlight: 'Световое шоу' },
+            history: 'Любимое место вечерних прогулок казанцев и гостей города.',
+            article: 'Маршрут вдоль Казанки откроет город с лучшего ракурса.',
+            tips: ['Одевайтесь теплее', 'Фотоаппарат обязателен'],
+            coords: [55.801, 49.106]
+        },
+        {
+            id: 'chakchak', title: 'Фестиваль чак-чака', desc: 'Дегустации 20 видов чак-чака и мастер-классы от лучших кондитеров.',
+            img: 'https://images.gastronom.ru/ZM2pAgSn8uJVLwRYvCUC0agEraPJOqdQ9Hm63eHMUOg/pr:article-preview-image/g:ce/rs:auto:0:0:0/L2Ntcy9hbGwtaW1hZ2VzL2I5YTdmMGIxLWU5ZjctNDA2Yy04ZDlhLWM1MjVhOGQ3OGM0NC5qcGc.webp',
+            address: 'Центральный парк', duration: '7 часов',
+            detail: '20 видов чак-чака от лучших кондитеров Татарстана.',
+            criteria: { time: '12:00–19:00', price: '300 ₽', highlight: 'Дегустация' },
+            history: 'Чак-чак — символ татарского гостеприимства с XIV века.',
+            article: 'Попробуйте классический рецепт и авторские версии с мёдом.',
+            tips: ['Приходите голодным', 'Покупайте в подарок'],
+            coords: [55.784, 49.127]
+        },
+        {
+            id: 'marathon', title: 'Казанский марафон', desc: 'Главный беговой праздник — трасса через Кремль и набережную.',
+            img: 'https://bolshoisport.ru/wp-content/uploads/2026/04/dsc_8106-30-1-scaled.jpg',
+            address: 'Площадь Тысячелетия', duration: '7 часов',
+            detail: 'Дистанции 5, 10, 21 и 42 км вдоль главных достопримечательностей.',
+            criteria: { time: '08:00–15:00', price: 'от 1500 ₽', highlight: 'Медаль с Кремлём' },
+            history: 'Казанский марафон проводится с 2015 года.',
+            article: 'Трасса через Кремль, набережную и парк Тысячелетия.',
+            tips: ['Регистрируйтесь заранее', 'Разминка обязательна'],
+            coords: [55.795, 49.106]
+        },
+        {
+            id: 'whitenights', title: 'Белые ночи Казани', desc: 'Уличные концерты, арт-инсталляции и ночные экскурсии по старому городу.',
+            img: 'https://s3go.kzn.ru/local/2025-08-01/LHC5m9rm1KZYpsQF.jpeg',
+            address: 'Старо-Татарская слобода', duration: '3 ночи',
+            detail: 'Ежегодный фестиваль летних белых ночей: музыка, свет, история.',
+            criteria: { time: '21:00–02:00', price: 'Бесплатно', highlight: 'Ночные экскурсии' },
+            history: 'Фестиваль зародился как продолжение традиции ночных прогулок по слободе.',
+            article: 'Три ночи живой музыки и арт-инсталляций в историческом квартале.',
+            tips: ['Тёплая одежда', 'Камера обязательна', 'Приходите к 22:00'],
+            coords: [55.783, 49.118]
+        },
+        {
+            id: 'openkitchen', title: 'Open Kitchen', desc: 'Фудмаркет с шефами из 12 городов России и мастер-классами.',
+            img: 'https://img.restoclub.ru/uploads/place/f/e/1/4/fe14bf4aa747bd5fcd08f8892910c55a_w1200_h630.webp',
+            address: 'IT-парк, ул. Петербургская', duration: '8 часов',
+            detail: 'Шефы из Москвы, Питера, Уфы и Казани готовят прямо на сцене.',
+            criteria: { time: '12:00–20:00', price: '500 ₽', highlight: 'Живые мастер-классы' },
+            history: 'Фестиваль появился в 2022 году как ответ на запрос городской гастрокультуры.',
+            article: 'Попробуйте блюда сезонного меню и возьмите рецепт домой.',
+            tips: ['Приходите голодным', 'Тарелки свои', 'Ранний вход дешевле'],
+            coords: [55.792, 49.118]
+        },
+        {
+            id: 'kazan_jazz', title: 'Казань — Jazz', desc: 'Международный джазовый фестиваль на открытых площадках города.',
+            img: 'https://wowhaus.ru/storage/app/uploads/public/51f/8c4/85d/thumb__1920_0_0_0_auto.jpg',
+            address: 'Кремлёвская набережная и парки', duration: '2 дня',
+            detail: 'Лучшие джазовые коллективы России и зарубежья под открытым небом.',
+            criteria: { time: '18:00–23:00', price: 'Вход свободный', highlight: 'Международные артисты' },
+            history: 'Фестиваль проводится с 2001 года, собирает до 50 000 зрителей.',
+            article: 'Главная сцена — у стен Кремля с видом на закат над Казанкой.',
+            tips: ['Плед с собой', 'Приходите за час', 'Лучшие места у фонтана'],
+            coords: [55.800, 49.107]
+        }
+    ];
+
+    const defaultScenarios = [
+        { id: 'romantic', icon: '🥂', title: 'Романтичный вечер', subtitle: 'Закаты, живая музыка и татарская кухня для двоих.', time: '5–6 ч', start: '18:00', img: 'https://radi-love.com/wp-content/uploads/2021/06/IMG_3453-1024x682-1.jpg', location: 'Кремлёвская набережная', popularity: 95, distance: 1.2, durationMinutes: 330, priceValue: 2500, categories: ['entertainment','leisure'], places: [ { t:'Прогулка', n:'Кремлёвская набережная', d:'Золотые закатные виды на Кремль и Казанку.', a:'ул. Федосеевская, 1', h:'Круглосуточно', price:'бесплатно' }, { t:'Ужин', n:'«Татарская усадьба»', d:'Авторская татарская кухня в историческом особняке.', a:'ул. Марджани, 8', h:'12:00–23:00', price:'1500 ₽' }, { t:'Десерт', n:'Кофейня «Ранняя пташка»', d:'Уютный интерьер, лучший чизкейк в городе.', a:'ул. Баумана, 40', h:'08:00–22:00', price:'500 ₽' }, { t:'Отель', n:'Korston Royal', d:'Панорама Кремля из окна номера.', a:'ул. Ершова, 1а', h:'Круглосуточно', price:'5000 ₽' } ], history: 'Маршрут для особых свиданий — набережная Казанки менялась с XIII века.', article: 'Вечерняя Казань прекрасна — закат над минаретами Кашан незабываем.', tips: ['Бронируйте столик за день', 'Одевайтесь теплее вечером', 'Возьмите зонт на случай дождя'], route_guide: '1. Встретьтесь на Кремлёвской набережной за час до заката.\n2. Пройдите пешком 10 минут до ресторана «Татарская усадьба».\n3. После ужина прогуляйтесь по Баумана до кофейни «Ранняя пташка».\n4. Завершите вечер в отеле Korston Royal.', coords: [55.798, 49.106] },
+        { id: 'culture', icon: '🏛️', title: 'Культурный вояж', subtitle: 'Кремль, Национальный музей и Театр оперы и балета.', time: '7–8 ч', start: '10:00', img: 'https://s3go.kzn.ru/local/2025-08-01/LHC5m9rm1KZYpsQF.jpeg', location: 'Казанский Кремль', popularity: 88, distance: 0.8, durationMinutes: 480, priceValue: 1500, categories: ['culture','leisure'], places: [ { t:'Кремль', n:'Казанский Кремль', d:'Объект ЮНЕСКО — мечеть Кул-Шариф и башня Сююмбике.', a:'Кремль, 1', h:'08:00–18:00', price:'вход свободный' }, { t:'Музей', n:'Национальный музей РТ', d:'7 000 лет истории края в 35 залах.', a:'Кремлёвская, 2', h:'10:00–18:00', price:'300 ₽' }, { t:'Театр', n:'Театр оперы и балета', d:'Великолепная архитектура эпохи сталинского ампира.', a:'пл. Свободы, 2', h:'19:00–22:00', price:'800 ₽' }, { t:'Обед', n:'Ресторан «Чирэм»', d:'Современная татарская кухня, меню от шефа.', a:'ул. Кави Наджми, 5', h:'12:00–23:00', price:'600 ₽' } ], history: 'Казанский Кремль существует с X века — здесь сходились цивилизации Востока и Запада.', article: 'Поднимитесь на башню Сююмбике и найдите своё имя в татарских орнаментах.', tips: ['Билеты в театр покупайте заранее', 'Удобная обувь', 'Аудиогид в музее — 200 ₽'], route_guide: '1. Начните с Кремля (вход через Спасскую башню).\n2. Пройдите в Национальный музей (5 минут).\n3. Обед в «Чирэме» (15 минут пешком).\n4. К 19:00 — в театр оперы и балета.', coords: [55.799, 49.105] },
+        { id: 'sviyazhsk', icon: '⛪', title: 'Остров-град Свияжск', subtitle: 'Деревянное зодчество XVI века и фрески ЮНЕСКО.', time: '8–9 ч', start: '09:00', img: 'https://www.tatar-inform.ru/images/uploads/4bf2c645be26a0ff6d881c818d88fc33.jpeg', location: 'остров Свияжск', popularity: 82, distance: 45, durationMinutes: 540, priceValue: 1200, categories: ['culture','leisure'], places: [ { t:'Музей', n:'Музей-заповедник', d:'Деревянные церкви XVI в., исторические экспозиции.', a:'с. Свияжск, ул. Троицкая, 1', h:'10:00–18:00', price:'200 ₽' }, { t:'Монастырь', n:'Успенский монастырь', d:'Фрески XVI века — объект Всемирного наследия ЮНЕСКО.', a:'с. Свияжск, ул. Троицкая, 3', h:'07:00–19:00', price:'бесплатно' }, { t:'Обед', n:'Трактир «Свияжский»', d:'Уха из местной рыбы и травяной чай.', a:'с. Свияжск, ул. Московская, 6', h:'11:00–20:00', price:'500 ₽' } ], history: 'Основан Иваном Грозным в 1551 году как плацдарм для взятия Казани.', article: 'Деревянная Троицкая церковь — единственная сохранившаяся постройка времён Грозного.', tips: ['Добраться на теплоходе (1,5 ч)', 'Берите воду и кепку', 'Последний теплоход в 17:30'], route_guide: '1. Теплоход из речпорта Казани.\n2. Посетите музей-заповедник.\n3. Осмотрите Успенский монастырь.\n4. Пообедайте в трактире «Свияжский».', coords: [55.770, 48.659] },
+        { id: 'bolgar', icon: '🕌', title: 'Великий Болгар', subtitle: 'Древняя столица Волжской Булгарии и Белая мечеть.', time: '10–11 ч', start: '08:00', img: 'https://sputnik-germes-kazan.ru/upload/iblock/b50/wpm6qm9s9p0qdgifcoaajby0q89poxon/%D0%92%D0%B5%D0%BB%D0%B8%D0%BA%D0%B8%D0%B8%CC%86%20%D0%91%D0%BE%D0%BB%D0%B3%D0%B0%D1%80%20%283%29_%D0%91%D0%B5%D0%BB%D0%B0%D1%8F%20%D0%BC%D0%B5%D1%87%D0%B5%D1%82%D1%8C.jpg', location: 'г. Болгар', popularity: 78, distance: 180, durationMinutes: 660, priceValue: 1800, categories: ['culture','leisure'], places: [ { t:'Мечеть', n:'Белая мечеть', d:'Современная жемчужина Болгара, напоминающая Тадж-Махал.', a:'г. Болгар, ул. Чайковского, 15', h:'09:00–18:00', price:'бесплатно' }, { t:'Городище', n:'Болгарское городище', d:'Руины столицы X–XIV вв., Большой и Малый минареты.', a:'г. Болгар, ул. Ленина, 1', h:'08:00–17:00', price:'200 ₽' }, { t:'Музей', n:'Музей хлеба', d:'Дегустация хлеба на закваске и выпечки.', a:'г. Болгар, ул. Спасская, 2', h:'10:00–18:00', price:'300 ₽' } ], history: 'Болгар — первая столица Волжской Булгарии, принявшая ислам в 922 году.', article: 'Белая мечеть построена в 2012 году — новая икона татарской архитектуры.', tips: ['Ехать на автомобиле ~3 ч', 'Посетите Чёрную палату', 'Берите наличные'], route_guide: '1. Выезд из Казани ранним утром.\n2. Начните с Белой мечети.\n3. Осмотрите городище.\n4. Зайдите в Музей хлеба.', coords: [54.966, 49.054] },
+        { id: 'chertovo', icon: '🏔️', title: 'Чёртово городище', subtitle: 'Скалы над Камой, тропы и рыбная кухня.', time: '6–7 ч', start: '10:00', img: 'https://7d9e88a8-f178-4098-bea5-48d960920605.selcdn.net/5f63a323-7b86-4dd8-8848-e3521a5d1953/-/format/webp/-/resize/1300x/', location: 'Елабужский р-н', popularity: 65, distance: 200, durationMinutes: 420, priceValue: 700, categories: ['leisure','entertainment'], places: [ { t:'Скалы', n:'Чёртово городище', d:'Панорамный вид на Каму с высоты 20 м.', a:'Елабужский р-н, д. Чёртово', h:'Круглосуточно', price:'бесплатно' }, { t:'Ресторан', n:'«Усадьба на Каме»', d:'Рыба, пойманная утром — уха и жареный судак.', a:'Елабуга, ул. Набережная, 12', h:'12:00–22:00', price:'800 ₽' }, { t:'Прогулка', n:'Тропа здоровья', d:'Эко-маршрут 5 км вдоль реки в сосновом бору.', a:'Елабуга, лесопарк', h:'Круглосуточно', price:'бесплатно' } ], history: 'Скальный массив — природный памятник, упоминается в летописях XII века.', article: 'Мощные скалы над Камой — излюбленное место фотографов и туристов.', tips: ['Треккинговая обувь обязательна', 'Бинокль для птиц', 'Солнцезащитный крем'], route_guide: '1. Доезжайте до Елабуги (2,5 ч).\n2. Поднимитесь на смотровую площадку.\n3. Пообедайте в «Усадьбе на Каме».\n4. Прогуляйтесь по тропе здоровья.', coords: [55.756, 51.994] },
+        { id: 'arbat', icon: '🎭', title: 'Казанский Арбат', subtitle: 'Пешеходная Баумана — уличные артисты и кафе.', time: '4–5 ч', start: '12:00', img: 'https://ic.pics.livejournal.com/zdorovs/16627846/1550903/1550903_original.jpg', location: 'ул. Баумана', popularity: 92, distance: 0.5, durationMinutes: 270, priceValue: 600, categories: ['entertainment','kitchen'], places: [ { t:'Улица', n:'Баумана', d:'Артисты, кафе, архитектура XIX–XX вв.', a:'ул. Баумана', h:'Круглосуточно', price:'бесплатно' }, { t:'Кафе', n:'«Сказка»', d:'Лучшие десерты и медовик по бабушкиному рецепту.', a:'ул. Баумана, 58', h:'10:00–22:00', price:'400 ₽' }, { t:'Музей', n:'Социалистического быта', d:'Ностальгия по СССР — нетронутые интерьеры.', a:'ул. Баумана, 42', h:'11:00–20:00', price:'200 ₽' } ], history: 'Казанский Арбат — душа города с XIX века, здесь шумели ярмарки.', article: 'Прогулка по Баумана — лучший способ почувствовать пульс Казани.', tips: ['Приходите после 16:00', 'Торгуйтесь с художниками', 'Попробуйте беляши'], route_guide: '1. Начните от улицы Пушкина.\n2. Пройдите до кафе «Сказка».\n3. Посетите музей соцбыта.\n4. Завершите у памятника карете Екатерины II.', coords: [55.789, 49.110] },
+        { id: 'art', icon: '🎨', title: 'Казанская мозаика', subtitle: 'Стрит-арт, галереи и современное искусство.', time: '5–6 ч', start: '12:00', img: 'https://inde.io/wp-content/uploads/archive-20xx/i/galleries/35734/xxl_6317b5ce4507704ba486156fa01c8ccb.jpg', location: 'Центр «Смена»', popularity: 70, distance: 1.0, durationMinutes: 360, priceValue: 500, categories: ['culture','leisure'], places: [ { t:'Галерея', n:'Центр «Смена»', d:'Лучшее современное искусство Поволжья.', a:'ул. Бурхана Шахиди, 7', h:'12:00–21:00', price:'200 ₽' }, { t:'Стрит-арт', n:'ул. Парижской Коммуны', d:'Муралы от художников со всей России.', a:'ул. Парижской Коммуны', h:'Круглосуточно', price:'бесплатно' }, { t:'Музей', n:'Музей ИЗО РТ', d:'Классика, авангард и татарское искусство.', a:'ул. Карла Маркса, 64', h:'10:00–18:00', price:'300 ₽' } ], history: 'Центр «Смена» — двигатель современной культуры Казани с 2012 года.', article: 'По четвергам вход в «Смену» бесплатный — отличный повод.', tips: ['По четвергам — бесплатно', 'Утром для уличных фото', 'Магазин в «Смене» — лучшие подарки'], route_guide: '1. Начните с центра «Смена».\n2. Прогуляйтесь по ул. Парижской Коммуны.\n3. Дойдите до Музея ИЗО.', coords: [55.795, 49.115] },
+        { id: 'coffee', icon: '☕', title: 'Кофейный марафон', subtitle: 'Три лучшие третьеволновые кофейни за одно утро.', time: '4–5 ч', start: '08:00', img: 'https://img.restoclub.ru/uploads/place/f/e/1/4/fe14bf4aa747bd5fcd08f8892910c55a_w1200_h630.webp', location: 'Казань, кофейни', popularity: 85, distance: 2.0, durationMinutes: 270, priceValue: 1000, categories: ['kitchen','leisure'], places: [ { t:'Кофейня', n:'«Кофе и Шоколад»', d:'Кемекс, альтернативные методы, свежая выпечка.', a:'ул. Пушкина, 15', h:'08:00–22:00', price:'300 ₽' }, { t:'Кофейня', n:'SURF Coffee', d:'Свежеобжаренные зёрна, сёрф-атмосфера.', a:'ул. Горького, 7', h:'08:00–21:00', price:'250 ₽' }, { t:'Кофейня', n:'Double B', d:'Фильтр-кофе на весах — всё серьёзно.', a:'ул. Профсоюзная, 23', h:'09:00–22:00', price:'500 ₽' } ], history: 'Кофейная культура Казани развивается с 2015 года — теперь здесь сильнее, чем во многих столицах.', article: 'Кемекс в «Кофе и Шоколад» — обязательный старт любого утра в Казани.', tips: ['Стартуйте с утра', 'Пейте воду между кофе', 'Спросите о сезонном зерне'], route_guide: '1. Начните с «Кофе и Шоколад» на Пушкина.\n2. Перейдите в SURF Coffee (10 минут).\n3. Завершите в Double B.', coords: [55.789, 49.111] },
+        { id: 'tea', icon: '🍵', title: 'Чайный сервис', subtitle: 'Татарское чаепитие — традиции, пироги и музей чак-чака.', time: '3–4 ч', start: '12:00', img: 'https://cdnn21.img.ria.ru/images/99572/04/995720460_126:343:3207:2076_1920x1080_80_0_0_3f4815ecb0b29929379dd7e358609d7d.jpg', location: 'Чайхана', popularity: 75, distance: 1.5, durationMinutes: 210, priceValue: 800, categories: ['kitchen','culture'], places: [ { t:'Чайная', n:'«Чайхана»', d:'Татарский чай с душицей, чабрецом и мятой.', a:'ул. Марджани, 5', h:'10:00–22:00', price:'400 ₽' }, { t:'Ресторан', n:'«Дом чая»', d:'Перемяч, кыстыбый, пироги и конечно чак-чак.', a:'ул. Баумана, 64', h:'10:00–21:00', price:'300 ₽' }, { t:'Музей', n:'Музей чак-чака', d:'История национального лакомства и угощение.', a:'ул. Парижской Коммуны, 18', h:'10:00–19:00', price:'200 ₽' } ], history: 'Чайная культура татар уходит корнями в средневековые традиции торговых городов.', article: 'В «Чайхане» готовят сбор из иван-чая и местных трав — попросите хозяйку рассказать состав.', tips: ['Чай пьют вприкуску с мёдом', 'Лучший сувенир — расписная пиала', 'Сохраните место в «Доме чая» заранее'], route_guide: '1. Начните с «Чайханы» на Марджани.\n2. Пройдите в «Дом чая» на Баумана.\n3. Завершите в Музее чак-чака.', coords: [55.782, 49.115] },
+        { id: 'theatre', icon: '🎭', title: 'Театральная ночь', subtitle: 'Ужин, опера и коктейли за кулисами.', time: '5 ч', start: '18:00', img: 'https://wowhaus.ru/storage/app/uploads/public/51f/8c4/85d/thumb__1920_0_0_0_auto.jpg', location: 'Театр оперы и балета', popularity: 60, distance: 0.7, durationMinutes: 300, priceValue: 2500, categories: ['entertainment','culture'], places: [ { t:'Ресторан', n:'«Театральный»', d:'Ужин перед спектаклем — паштет из утки и рыбный суп.', a:'пл. Свободы, 5', h:'17:00–23:00', price:'1500 ₽' }, { t:'Театр', n:'Театр оперы и балета', d:'Классические постановки в зале на 1400 мест.', a:'пл. Свободы, 2', h:'19:00–22:00', price:'800 ₽' }, { t:'Бар', n:'«За кулисами»', d:'Авторские коктейли и закуски после спектакля.', a:'ул. Пушкина, 27', h:'18:00–02:00', price:'600 ₽' } ], history: 'Здание театра 1956 года — образец советского ампира, занесён в реестр культурного наследия.', article: 'Ужин в «Театральном» — часть ритуала для казанской интеллигенции с 1960-х годов.', tips: ['Дресс-код: классика или смарт-кэжуал', 'Бинокль дают в гардеробе', 'Бронируйте ресторан за 2 дня'], route_guide: '1. Ужин в «Театральном» в 18:00.\n2. Спектакль в театре оперы и балета в 19:00.\n3. После — коктейли в «За кулисами».', coords: [55.796, 49.124] },
+        { id: 'kaban', icon: '🦆', title: 'На Кабане', subtitle: 'Озёрная набережная, утки и татарская гастрономия.', time: '3–4 ч', start: '11:00', img: 'https://tur-kazan.ru/storage/img-6792.jpg', location: 'озеро Кабан', popularity: 55, distance: 1.3, durationMinutes: 210, priceValue: 1200, categories: ['leisure','kitchen'], places: [ { t:'Прогулка', n:'Набережная озера Кабан', d:'Озёрная гладь, лебеди и утки у берега.', a:'ул. Марджани, 10', h:'Круглосуточно', price:'бесплатно' }, { t:'Ресторан', n:'«Кабанчик»', d:'Татарская кухня с видом на воду.', a:'ул. Татарстан, 1', h:'12:00–22:00', price:'700 ₽' }, { t:'Кофейня', n:'«Озеро»', d:'Десерты с видом на воду с открытой террасы.', a:'ул. Хади Такташ, 3', h:'09:00–21:00', price:'400 ₽' } ], history: 'Система из трёх озёр — природный памятник в центре города, легендарная сокровищница ханства.', article: 'Покормите уток специальным кормом — пшеничными зёрнами без соли.', tips: ['Лучше в будний день', 'Уток кормите зерном, не хлебом', 'Велодорожка вокруг озера'], route_guide: '1. Прогулка по набережной (30 мин).\n2. Обед в «Кабанчике».\n3. Кофе с десертом в «Озеро».', coords: [55.775, 49.120] },
+        { id: 'center', icon: '🏙️', title: 'Центр Казани', subtitle: 'Площадь Свободы, Петербургская и крафтовые бары.', time: '4–5 ч', start: '12:00', img: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/15/9f/57/cf/caption.jpg?w=1200&h=1200&s=1', location: 'Площадь Свободы', popularity: 90, distance: 0.4, durationMinutes: 270, priceValue: 800, categories: ['entertainment','kitchen'], places: [ { t:'Площадь', n:'Свободы', d:'Место главных концертов и встреч казанцев.', a:'пл. Свободы', h:'Круглосуточно', price:'бесплатно' }, { t:'Улица', n:'Петербургская', d:'Классическая архитектура XIX–XX вв. в сердце города.', a:'ул. Петербургская', h:'Круглосуточно', price:'бесплатно' }, { t:'Кафе', n:'«Березка»', d:'Крафтовое пиво и авторские закуски до полуночи.', a:'ул. Петербургская, 12', h:'12:00–00:00', price:'500 ₽' } ], history: 'Площадь Свободы — историческое сердце Казани, ранее площадь Куйбышева.', article: 'Пятничный вечер на Петербургской — самый живой moment города.', tips: ['Пятничный вечер', 'Бронируйте столик в «Березке»', 'Зайдите в галерею «Хазинэ»'], route_guide: '1. Начните с площади Свободы.\n2. Прогулка по Петербургской.\n3. Ужин и напитки в «Березке».', coords: [55.793, 49.119] },
+        { id: 'artcenter', icon: '🖼️', title: 'Арт-центр', subtitle: 'Современное искусство, кофе и коворкинг в «Смене».', time: '3–4 ч', start: '11:00', img: 'https://idem-nn.ru/upload/iblock/b0a/evliqqqmvk9f3d4tz0z41e7vpxmyiosc.jpeg', location: 'Центр «Смена»', popularity: 68, distance: 1.1, durationMinutes: 240, priceValue: 700, categories: ['culture','workstudy'], places: [ { t:'Арт-пространство', n:'Центр «Смена»', d:'Лучшие выставки современного искусства Татарстана.', a:'ул. Бурхана Шахиди, 7', h:'12:00–21:00', price:'200 ₽' }, { t:'Кофейня', n:'Кофе «Диван»', d:'Зерновой кофе и тихая атмосфера для чтения.', a:'ул. Бурхана Шахиди, 5', h:'09:00–22:00', price:'250 ₽' }, { t:'Коворкинг', n:'«Штаб»', d:'Рабочие места и переговорные в историческом здании.', a:'ул. Татарстан, 1', h:'09:00–21:00', price:'500 ₽/день' } ], history: 'Центр «Смена» открылся в 2012 году в здании советской типографии.', article: 'Фильтр-кофе в «Диване» и новая выставка в «Смене» — идеальное утро в Казани.', tips: ['Подписка на месяц — 500 ₽', 'Бесплатные лекции по четвергам', 'Книжный магазин на первом этаже'], route_guide: '1. Посетите выставку в «Смене».\n2. Кофе в «Диване».\n3. Поработайте в «Штабе».', coords: [55.790, 49.112] },
+        { id: 'itpark', icon: '💻', title: 'Войти в IT', subtitle: 'Технопарк Башира Рамеева — лекции и стартапы.', time: '4–5 ч', start: '12:00', img: 'https://inde.io/wp-content/uploads/2025/08/5233e02df77c1e3611e4f4b0cbea8d6a.jpg', location: 'Технопарк им. Башира Рамеева', popularity: 72, distance: 0.9, durationMinutes: 300, priceValue: 500, categories: ['workstudy','culture'], places: [ { t:'IT-парк', n:'Технопарк', d:'Лекции от технологических компаний и стартап-шоу.', a:'ул. Петербургская, 52', h:'09:00–21:00', price:'вход свободный' }, { t:'Кофейня', n:'«Brainstorm»', d:'Кофе для тех, кто меняет мир — прямо здесь.', a:'ул. Петербургская, 50', h:'08:00–22:00', price:'250 ₽' }, { t:'Коворкинг', n:'IT-коворкинг', d:'Рабочие станции с мониторами и быстрым интернетом.', a:'ул. Петербургская, 52, 3 этаж', h:'09:00–22:00', price:'300 ₽/день' } ], history: 'Технопарк открыт в 2009 году — первый в Татарстане, сейчас один из крупнейших в России.', article: 'Кофе в «Brainstorm» с видом на стартапы, меняющие экономику Поволжья.', tips: ['Регистрация на лекции бесплатна', 'Наушники с собой', 'Дресс-код — любой'], route_guide: '1. Зайдите в технопарк, возьмите план.\n2. Кофе в «Brainstorm».\n3. Поработайте в коворкинге.', coords: [55.792, 49.118] },
+        { id: 'littleasia', icon: '🥡', title: 'Маленькая Азия', subtitle: 'Wok, фо бо и тайские коктейли за вечер.', time: '3–4 ч', start: '12:00', img: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/18/5a/1a/34/lounge-1.jpg', location: 'Казань, азиатский квартал', popularity: 80, distance: 0.6, durationMinutes: 240, priceValue: 900, categories: ['kitchen','entertainment'], places: [ { t:'Кафе', n:'«Азия Mix»', d:'Лапша wok на живом огне — лучшая в городе.', a:'ул. Петербургская, 25', h:'12:00–23:00', price:'500 ₽' }, { t:'Ресторан', n:'«Вьетнамский дворик»', d:'Аутентичный фо бо и свежие роллы.', a:'ул. Баумана, 78', h:'11:00–22:00', price:'400 ₽' }, { t:'Бар', n:'«Тайский слон»', d:'Авторские тайские коктейли и панг-панг.', a:'ул. Пушкина, 30', h:'18:00–02:00', price:'600 ₽' } ], history: 'Азиатские рестораны появились в Казани в 2010-х — сейчас здесь настоящий квартал.', article: '«Азия Mix» — лучший wok в городе: очередь на обед говорит сама за себя.', tips: ['Будни без очередей', 'Фо бо с говядиной и говяжьими фрикадельками', 'Закажите панг-панг в «Тайском слоне»'], route_guide: '1. Начните с «Азия Mix».\n2. Перейдите во «Вьетнамский дворик».\n3. Завершите в «Тайском слоне».', coords: [55.791, 49.113] },
+        { id: 'welcome', icon: '🧳', title: 'Добро пожаловать', subtitle: 'Максимальное погружение в Татарстан за один день.', time: 'Весь день', start: '10:00', img: 'https://efspb.ru/upload/iblock/b10/nf8w9814mhabrjkt8b6n2n10wvitqymy.jpg', location: 'Татарская культура', popularity: 95, distance: 0.3, durationMinutes: 720, priceValue: 2500, categories: ['culture','kitchen','entertainment'], places: [ { t:'Отель', n:'«Татарская усадьба»', d:'Аутентичные номера в историческом особняке XIX века.', a:'ул. Марджани, 8', h:'Круглосуточно', price:'от 3500 ₽' }, { t:'Ресторан', n:'«Тюбетей»', d:'Национальная кухня — бэлиш, эчпочмак, чак-чак.', a:'ул. Кремлёвская, 21', h:'12:00–23:00', price:'600 ₽' }, { t:'Музей', n:'Музей чак-чака', d:'История лакомства и дегустация 5 видов.', a:'ул. Парижской Коммуны, 18', h:'10:00–19:00', price:'200 ₽' }, { t:'Театр', n:'Театр им. Камала', d:'Ведущий татарский театр — постановки на двух языках.', a:'ул. Татарстан, 1', h:'19:00–22:00', price:'800 ₽' } ], history: 'Этот маршрут — дистилляция всего самого ценного в татарской культуре.', article: 'Отель «Татарская усадьба» — лучшее место для первого знакомства с традициями.', tips: ['Билеты в театр покупайте онлайн', 'Привезите домой расписную пиалу', 'Попросите хозяйку отеля рассказать историю'], route_guide: '1. Заселитесь в «Татарскую усадьбу».\n2. Обед в «Тюбетее».\n3. Музей чак-чака.\n4. Вечерний спектакль в театре Камала.', coords: [55.788, 49.110] },
+        { id: 'library', icon: '📚', title: 'Библиотечный день', subtitle: 'Национальная библиотека, коворкинг и арт-хаус кино.', time: '3–5 ч', start: '10:00', img: 'https://upload.wikimedia.org/wikipedia/commons/f/f7/%D0%9D%D0%9A%D0%A6_%D0%9A%D0%B0%D0%B7%D0%B0%D0%BD%D1%8C_%D0%BF%D0%BE%D1%81%D0%BB%D0%B5_%D1%80%D0%B5%D0%BA%D0%BE%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D0%B8%D0%B8.jpg', location: 'Национальная библиотека Татарстана', popularity: 50, distance: 0.8, durationMinutes: 240, priceValue: 0, categories: ['workstudy','culture'], places: [ { t:'Библиотека', n:'Национальная библиотека РТ', d:'Читальные залы, редкие фонды, периодика.', a:'ул. Пушкина, 86', h:'09:00–20:00', price:'бесплатно' }, { t:'Коворкинг', n:'«Точка кипения»', d:'Рабочие места с панорамными окнами.', a:'ул. Пушкина, 86, 2 этаж', h:'10:00–21:00', price:'бесплатно' }, { t:'Кинозал', n:'Зал «Пушкинский»', d:'Авторское и арт-хаус кино каждый вечер.', a:'ул. Пушкина, 86, 1 этаж', h:'18:00–22:00', price:'бесплатно' } ], history: 'Национальная библиотека Татарстана основана в 1865 году — одна из старейших в регионе.', article: 'Коворкинг «Точка кипения» — любимое место казанских фрилансеров с бесплатным Wi-Fi.', tips: ['Читательский билет за 5 минут', 'Wi-Fi 100 Мбит/с', 'Расписание кино — на сайте'], route_guide: '1. Получите читательский билет у входа.\n2. Поднимитесь в коворкинг.\n3. Вечером — кинопоказ в зале «Пушкинский».', coords: [55.793, 49.122] }
+    ];
+
+    /* ===================================================
+       STATE
+    =================================================== */
+    let eventsData = [], scenariosData = [];
+
+    function loadData() {
+        const se = localStorage.getItem('sputnikEvents');
+        const ss = localStorage.getItem('sputnikScenarios');
+        eventsData   = se ? JSON.parse(se) : JSON.parse(JSON.stringify(defaultEvents));
+        scenariosData = ss ? JSON.parse(ss) : JSON.parse(JSON.stringify(defaultScenarios));
+        eventsData.forEach(e => { if (!e.id) e.id = 'e' + Date.now() + Math.random().toString(36).slice(2,6); });
+        scenariosData.forEach(s => { if (!s.id) s.id = 's' + Date.now() + Math.random().toString(36).slice(2,6); });
+        saveData();
+        window.events = eventsData; window.scenarios = scenariosData;
+    }
+    function saveData() {
+        localStorage.setItem('sputnikEvents', JSON.stringify(eventsData));
+        localStorage.setItem('sputnikScenarios', JSON.stringify(scenariosData));
+    }
+    function generateId() { return 'id' + Date.now() + Math.random().toString(36).slice(2,6); }
+
+    window.favorites = JSON.parse(localStorage.getItem('sputnikFav') || '[]');
+    window.wishlist  = JSON.parse(localStorage.getItem('sputnikWish') || '[]');
+    window.currentSort = localStorage.getItem('sputnikSort') || null;
+    window.currentFilters = JSON.parse(localStorage.getItem('sputnikFilters') || '[]');
+
+    /* ===================================================
+       MARQUEE — infinite CSS scroll (no JS loop)
+    =================================================== */
+    function renderMarquee() {
+        const track = document.getElementById('eventsMarquee');
+        if (!track) return;
+        // Triple items for extra-smooth infinite loop
+        const items = [...eventsData, ...eventsData, ...eventsData];
+        const newIds = new Set(eventsData.slice(-3).map(e => e.id));
+        track.innerHTML = items.map(e => `
+            <div class="event-card${newIds.has(e.id) ? ' is-new' : ''}" onclick="openEventDetail('${e.id}')">
+                <div class="event-card-img-wrap">
+                    <img src="${e.img}" alt="${e.title}" loading="lazy" />
+                    <span class="event-card-badge">${'Событие'}</span>
+                </div>
+                <div class="event-card-body">
+                    <div class="event-card-title">${e.title}</div>
+                    <div class="event-card-desc">${e.desc}</div>
+                    ${e.article ? `<div class="event-card-desc" style="margin-top:5px;color:var(--text-muted);font-size:0.77rem;">${e.article}</div>` : ''}
+                    <div class="event-card-extra">
+                        ${e.duration ? `<span class="event-extra-tag">⏱ ${e.duration}</span>` : ''}
+                        ${e.address ? `<span class="event-extra-tag">📍 ${e.address}</span>` : ''}
+                        ${e.criteria?.highlight ? `<span class="event-extra-tag">✦ ${e.criteria.highlight}</span>` : ''}
+                    </div>
+                    <div class="event-card-meta">
+                        <span class="event-meta-tag">${e.criteria?.time || e.duration || ''}</span>
+                        <span class="event-meta-tag ${e.criteria?.price === 'Вход свободный' || e.criteria?.price === 'Бесплатно' ? 'gold' : ''}">${e.criteria?.price || ''}</span>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+        // Animate: 3 copies → go to -33.33% (= one set width)
+        const cardW = 360 + 32; // card width + gap
+        const totalW = eventsData.length * cardW;
+        const duration = Math.max(30, eventsData.length * 6);
+        track.style.animationDuration = duration + 's';
+
+        // Pause on hover
+        track.addEventListener('mouseenter', () => track.classList.add('paused'));
+        track.addEventListener('mouseleave', () => track.classList.remove('paused'));
+    }
+
+    /* ===================================================
+       CARDS
+    =================================================== */
+    const catNames = { kitchen: '🍽 Кухня', entertainment: '🎭 Развлечения', leisure: '🌿 Досуг', workstudy: '💼 Работа', culture: '🏛 Культура' };
+
+    function getFiltered() {
+        let list = scenariosData.slice();
+        if (window.currentFilters?.length)
+            list = list.filter(s => s.categories?.some(c => window.currentFilters.includes(c)));
+        if (window.currentSort) {
+            const sorts = {
+                popularity: (a,b) => (b.popularity||0)-(a.popularity||0),
+                newest: (a,b) => b.id.localeCompare(a.id),
+                oldest: (a,b) => a.id.localeCompare(b.id),
+                price: (a,b) => (a.priceValue||0)-(b.priceValue||0),
+                time: (a,b) => (a.durationMinutes||0)-(b.durationMinutes||0),
+                distance: (a,b) => (a.distance||0)-(b.distance||0)
+            };
+            list.sort(sorts[window.currentSort] || (() => 0));
+        }
+        return list;
+    }
+
+    // SVG icons mapped to scenario icon field
+    const iconSVGs = {
+        'romantic':   `<svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`,
+        'culture':    `<svg class="card-icon-svg" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+        'sviyazhsk':  `<svg class="card-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+        'bolgar':     `<svg class="card-icon-svg" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+        'chertovo':   `<svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M3 17l4-8 4 4 4-6 4 10"/><path d="M3 21h18"/></svg>`,
+        'arbat':      `<svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`,
+        'art':        `<svg class="card-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.77 11.89l-1.06 6.37a1 1 0 0 1-1 .87 1 1 0 0 1-1-.87L11.68 12"/><line x1="8" y1="21" x2="16" y2="21"/></svg>`,
+        'coffee':     `<svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>`,
+        'tea':        `<svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V8z"/></svg>`,
+        'theatre':    `<svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`,
+        'kaban':      `<svg class="card-icon-svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12a4 4 0 0 0 8 0"/></svg>`,
+        'center':     `<svg class="card-icon-svg" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>`,
+        'artcenter':  `<svg class="card-icon-svg" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><polyline points="21 15 16 10 5 21"/></svg>`,
+        'itpark':     `<svg class="card-icon-svg" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+        'littleasia': `<svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M12 6v6l4 2"/></svg>`,
+        'welcome':    `<svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>`,
+        'library':    `<svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`
+    };
+    const defaultIconSVG = `<svg class="card-icon-svg" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
+
+    // Why/when hints for places (keyed by scenario id, then place index)
+    const placeWhys = {
+        romantic: ['Встречайте закат здесь — вид на Кремль незабываем', 'Бронируйте столик у окна заранее — вид на сад', 'Лучший чизкейк — в угловом столике у окна', 'Панорамные виды на ночную Казань с 12 этажа'],
+        culture: ['Начните с восхода — меньше туристов и мягкий свет', 'Берите аудиогид — без него легко пропустить главное', 'Ложи в партере быстро разбирают — покупайте онлайн', 'Обед здесь после музея — недалеко и отличная кухня'],
+        sviyazhsk: ['Единственный способ попасть — теплоход из речпорта', 'Главная причина ехать — уникальные фрески XVI века', 'Лучшая уха в окрестностях — рыба прямо с утра', null],
+        bolgar: ['Новое сердце Болгара — жемчужина современной архитектуры', 'Объект ЮНЕСКО — здесь ислам принят в 922 году', 'Дегустация на закваске — рецепт не менялся 400 лет', null],
+        chertovo: ['Высота 20 м над Камой — лучшее фото в Татарстане', 'Рыбу берут прямо с лодки — утренний улов', 'Сосновый бор: воздух после Казани как контраст', null],
+        arbat: ['Лучшее время — вечер пятницы, уличные артисты на пике', 'Медовик по бабушкиному — главный десерт Казани', 'Нетронутые советские интерьеры — редкость в России', null],
+        art: ['По четвергам вход свободный — самый выгодный день', 'Лучшее время для фото стрит-арта — рано утром', 'Авангард и татарское искусство в одном месте', null],
+        coffee: ['Кемекс — фирменный напиток, не просите эспрессо', 'Свежеобжаренные зёрна из Эфиопии и Колумбии', 'Фильтр на весах — самый «честный» кофе в городе', null],
+        tea: ['Попросите сбор из иван-чая — местный секрет', 'Кыстыбый с картошкой — попробуйте обязательно', 'История + угощение 5 видами чак-чака включены', null],
+        theatre: ['Ужин за 1,5 часа до спектакля — без спешки', 'Ложа А6 — лучший вид на сцену в зале', 'Живые коктейли с татарскими настойками до 2:00', null],
+        kaban: ['Легендарное озеро с кладами ханства — история под ногами', 'Татарская кухня с видом на воду — редкость', 'Лучший угол съёмки озера — с открытой террасы', null],
+        center: ['Главная сцена города — здесь всё начинается', 'Архитектура XIX–XX вв. в идеальном состоянии', 'Пятница после 22:00 — полная атмосфера', null],
+        artcenter: ['Квартальная выставка — новая каждые 6 недель', 'Зерновой кофе и тишина — лучше любого офиса', 'Переговорная с проектором доступна без брони', null],
+        itpark: ['Открытые лекции в 12:00 и 18:00 — расписание на сайте', 'Вид на IT-стартапы за стеклом — вдохновляет', 'Монитор 27" и кресло — лучше домашнего рабочего места', null],
+        littleasia: ['Лапша wok на живом огне — 3-минутное ожидание, идеальна', 'Фо бо только из свежих костей — приходите до 14:00', 'Тайские настойки на маракуйе — авторский рецепт', null],
+        welcome: ['Исторический особняк XIX века — атмосфера с первой минуты', 'Бэлиш — главное блюдо татарской кухни, пробуйте первым', 'Дегустация включена в стоимость — 5 видов чак-чака', 'Постановки с субтитрами на русском — ничего не пропустите'],
+        library: ['Читальный зал с дубовыми столами — редкость в России', 'Лучший Wi-Fi в городе — проверено студентами КФУ', 'Авторское кино каждый вечер — расписание на входе', null]
+    };
+    window.placeWhys = placeWhys;
+
+    function renderCards() {
+        const grid = document.getElementById('cardsGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        const list = getFiltered();
+        // Get global order for serial numbers
+        const allIds = scenariosData.map(s => s.id);
+        const cols = [[],[],[]];
+        list.forEach((s,i) => cols[i%3].push(s));
+        cols.forEach(colItems => {
+            const col = document.createElement('div');
+            col.className = 'card-col';
+            colItems.forEach((s) => {
+                const globalIdx = allIds.indexOf(s.id);
+                const serialNum = String(globalIdx + 1).padStart(2, '0');
+                const isFav  = window.favorites.includes(s.id);
+                const isWish = window.wishlist.includes(s.id);
+                const total  = (s.places||[]).reduce((sum,p) => sum+(parseInt(p.price)||0), 0);
+                const catChips = (s.categories||[]).slice(0,2).map(c=>`<span class="cat-chip">${catNames[c]||c}</span>`).join('');
+                const iconHTML = iconSVGs[s.id] || defaultIconSVG;
+                const whys = placeWhys[s.id] || [];
+
+                const el = document.createElement('div');
+                el.className = 'card'; el.id = 'card_' + s.id;
+                el.setAttribute('onclick', `if(!event.target.closest('.icon-btn')&&!event.target.closest('.expand-btn')&&!event.target.closest('.card-expand-body')&&!event.target.closest('.dropdown')) openDetail('${s.id}')`);
+                el.innerHTML = `
+                    <div class="card-img-wrap">
+                        <img class="card-img" src="${s.img}" alt="${s.title}" loading="lazy" />
+                        <div class="card-category-chips">${catChips}</div>
+                        <div class="card-num">${serialNum}</div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-top">
+                            <div class="card-icon-wrap">${iconHTML}</div>
+                            <div class="card-title-wrap">
+                                <div class="card-title">${s.title}</div>
+                                <div class="card-subtitle">${s.subtitle||''}</div>
+                            </div>
+                        </div>
+                        <div class="card-meta-row">
+                            <span class="meta-pill">⏱ ${s.time||''}</span>
+                            ${s.start ? `<span class="meta-pill accent">→ ${s.start}</span>` : ''}
+                            ${s.priceValue === 0 ? '<span class="meta-pill green">Бесплатно</span>' : `<span class="meta-pill">~${s.priceValue||0} ₽</span>`}
+                            ${s.distance <= 5 ? '<span class="meta-pill">Центр</span>' : s.distance <= 50 ? `<span class="meta-pill">${s.distance} км</span>` : `<span class="meta-pill">~${s.distance} км</span>`}
+                        </div>
+                        <div class="card-footer">
+                            <div class="location-line">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                ${s.location||''}
+                            </div>
+                            <div class="card-actions">
+                                <button class="icon-btn heart-btn ${isFav?'favorited':''}" onclick="toggleFav(event,'${s.id}',this)" title="В избранное">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                </button>
+                                <button class="icon-btn bookmark-btn ${isWish?'wishlisted':''}" onclick="toggleWish(event,'${s.id}',this)" title="Хочу побывать">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                                </button>
+                                <button class="expand-btn" onclick="toggleCard(event,'${s.id}')" title="Развернуть">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-expand-body" id="body_${s.id}" onclick="if(!event.target.closest('button')) openDetail('${s.id}')">
+                        <div class="places-list">
+                            ${(s.places||[]).map((p,pi) => {
+                                const why = whys[pi] || '';
+                                return `
+                                <div class="place-item" data-step="${pi+1}">
+                                    <div class="place-step">${p.t||''}</div>
+                                    <div class="place-name">${p.n||''}</div>
+                                    <div class="place-desc">${p.d||''}</div>
+                                    ${why ? `<div class="place-why">↳ ${why}</div>` : ''}
+                                    <div class="place-row">
+                                        <span>🕒 ${p.h||''}</span>
+                                        <span>💰 ${p.price||''}</span>
+                                        ${p.a ? `<span>📍 ${p.a}</span>` : ''}
+                                    </div>
+                                </div>
+                            `}).join('')}
+                        </div>
+                        <div class="expand-total">Итого: ~${total} ₽</div>
+                        ${s.route_guide ? `<div class="route-guide"><strong>Маршрут</strong>${s.route_guide.replace(/\n/g,'<br>')}</div>` : ''}
+                        ${s.history ? `<div class="history-note">📜 ${s.history}</div>` : ''}
+                        ${s.tips?.length ? `<div class="tips-grid">${s.tips.map(t=>`<span class="tip-tag">✓ ${t}</span>`).join('')}</div>` : ''}
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;position:relative;z-index:10;">
+                            <button class="detail-btn" onclick="openDetail('${s.id}')">Подробнее →</button>
+                            <button class="collapse-btn" onclick="collapseCard('${s.id}')">Скрыть</button>
+                        </div>
+                    </div>
+                `;
+                col.appendChild(el);
+            });
+            grid.appendChild(col);
+        });
+        observeCards();
+    }
+
+    function observeCards() {
+        const obs = new IntersectionObserver(entries => {
+            entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); obs.unobserve(e.target); } });
+        }, { threshold: 0.08 });
+        document.querySelectorAll('.card:not(.revealed)').forEach(c => obs.observe(c));
+    }
+
+    /* ===================================================
+       CARD INTERACTIONS
+    =================================================== */
+    window.toggleCard = function(e, id) {
+        e.stopPropagation();
+        const card = document.getElementById('card_' + id);
+        if (!card) return;
+        const wasExpanded = card.classList.contains('expanded');
+        document.querySelectorAll('.card.expanded').forEach(c => { if (c.id !== 'card_'+id) c.classList.remove('expanded'); });
+        card.classList.toggle('expanded', !wasExpanded);
+        if (!wasExpanded) setTimeout(() => card.scrollIntoView({ behavior:'smooth', block:'nearest' }), 80);
+    };
+    window.collapseCard = function(id) {
+        const card = document.getElementById('card_' + id);
+        if (card) card.classList.remove('expanded');
+    };
+
+    /* ===================================================
+       FAV / WISH
+    =================================================== */
+    function saveFavs()  { localStorage.setItem('sputnikFav',  JSON.stringify(window.favorites)); document.getElementById('favCount').textContent = window.favorites.length; }
+    function saveWishs() { localStorage.setItem('sputnikWish', JSON.stringify(window.wishlist));  document.getElementById('wishCount').textContent = window.wishlist.length; }
+
+    window.toggleFav  = function(e, id, btn) {
+        e.stopPropagation();
+        const i = window.favorites.indexOf(id);
+        if (i > -1) { window.favorites.splice(i,1); btn?.classList.remove('favorited'); }
+        else { window.favorites.push(id); btn?.classList.add('favorited'); }
+        saveFavs(); renderCards();
+    };
+    window.toggleWish = function(e, id, btn) {
+        e.stopPropagation();
+        const i = window.wishlist.indexOf(id);
+        if (i > -1) { window.wishlist.splice(i,1); btn?.classList.remove('wishlisted'); }
+        else { window.wishlist.push(id); btn?.classList.add('wishlisted'); }
+        saveWishs(); renderCards();
+    };
+
+    /* ===================================================
+       FILTERS & SORT
+    =================================================== */
+    window.toggleDropdown = function(id) {
+        const dd = document.getElementById(id);
+        if (!dd) return;
+        dd.classList.toggle('show');
+        ['sortDropdown','filterDropdown'].forEach(x => { if (x!==id) document.getElementById(x)?.classList.remove('show'); });
+    };
+    document.addEventListener('click', e => {
+        if (!e.target.closest('.filter-pill') && !e.target.closest('.dropdown')) {
+            document.querySelectorAll('.dropdown.show').forEach(d => d.classList.remove('show'));
+        }
+    });
+
+    window.applySort = function(s) {
+        window.currentSort = s; localStorage.setItem('sputnikSort', s);
+        document.getElementById('sortBtn')?.classList.add('active');
+        document.getElementById('resetSort').style.display = 'inline-flex';
+        document.getElementById('sortDropdown')?.classList.remove('show');
+        renderCards();
+    };
+    window.resetSort = function() {
+        window.currentSort = null; localStorage.removeItem('sputnikSort');
+        document.getElementById('sortBtn')?.classList.remove('active');
+        document.getElementById('resetSort').style.display = 'none';
+        renderCards();
+    };
+
+    window.toggleFilter = function(f) {
+        if (window.currentFilters.includes(f)) window.currentFilters = window.currentFilters.filter(x=>x!==f);
+        else window.currentFilters.push(f);
+        localStorage.setItem('sputnikFilters', JSON.stringify(window.currentFilters));
+        document.getElementById('filterDropdown')?.classList.remove('show');
+        const hasFilters = window.currentFilters.length > 0;
+        document.getElementById('filterBtn')?.classList.toggle('active', hasFilters);
+        document.getElementById('resetFilter').style.display = hasFilters ? 'inline-flex' : 'none';
+        renderActiveFilters();
+        renderCards();
+    };
+    window.resetFilters = function() {
+        window.currentFilters = []; localStorage.setItem('sputnikFilters','[]');
+        document.getElementById('filterBtn')?.classList.remove('active');
+        document.getElementById('resetFilter').style.display = 'none';
+        renderActiveFilters(); renderCards();
+    };
+
+    function renderActiveFilters() {
+        const c = document.getElementById('activeFilters');
+        if (!c) return;
+        c.innerHTML = window.currentFilters.map(f =>
+            `<span class="filter-tag">${catNames[f]||f} <span class="remove-tag" onclick="toggleFilter('${f}')">✕</span></span>`
+        ).join('');
+    }
+
+    /* ===================================================
+       DETAIL PAGES
+    =================================================== */
+    window.openEventDetail = function(id) {
+        const ev = eventsData.find(e => e.id === id); if (!ev) return;
+        const w = window.open('', '_blank');
+        w.document.write(makeDetailPage(ev, 'event'));
+        w.document.close();
+    };
+    window.openDetail = function(id) {
+        const s = scenariosData.find(x => x.id === id); if (!s) return;
+        const w = window.open('', '_blank');
+        w.document.write(makeDetailPage(s, 'scenario'));
+        w.document.close();
+    };
+
+    function makeDetailPage(item, type) {
+        const isFav  = window.favorites.includes(item.id);
+        const isWish = window.wishlist.includes(item.id);
+        const coords = item.coords;
+        const mapHTML = coords ? `<iframe style="width:100%;height:320px;border:none;border-radius:16px;margin-top:8px;" src="https://www.openstreetmap.org/export/embed.html?bbox=${coords[1]-0.012},${coords[0]-0.012},${coords[1]+0.012},${coords[0]+0.012}&layer=mapnik&marker=${coords[0]},${coords[1]}"></iframe>` : '';
+
+        // Enrich places for scenario detail page
+        const whys = (window.placeWhys && window.placeWhys[item.id]) || [];
+        const placesHTML = type === 'scenario' && item.places ? item.places.map((p,i) => {
+            const why = whys[i] || '';
+            return `
+            <div class="route-stop">
+                <div class="route-stop-connector">
+                    <div class="route-stop-num">${i+1}</div>
+                    ${i < item.places.length - 1 ? '<div class="route-stop-line"></div>' : ''}
+                </div>
+                <div class="route-stop-card">
+                    <div class="route-stop-type">${p.t||''}</div>
+                    <div class="route-stop-name">${p.n||''}</div>
+                    <div class="route-stop-desc">${p.d||''}</div>
+                    ${why ? `<div class="route-stop-why">↳ ${why}</div>` : ''}
+                    <div class="route-stop-meta">
+                        <span class="route-meta-item">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            ${p.h||''}
+                        </span>
+                        <span class="route-meta-item">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            ${p.price||''}
+                        </span>
+                        ${p.a ? `<span class="route-meta-item">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                            ${p.a}
+                        </span>` : ''}
+                    </div>
+                </div>
+            </div>
+        `}).join('') : '';
+
+        const total = type==='scenario' && item.places ? item.places.reduce((s,p)=>s+(parseInt(p.price)||0),0) : null;
+
+        return `<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>${item.title} — Спутник</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F0E8;--card-bg:#fff;--text:#1A1714;--text-secondary:#7A7068;--text-muted:#A89E92;--accent:#C8A96E;--accent-hover:#B8945A;--accent-light:#EDD9B0;--item-bg:#F2EBE0;--border:#E2D9CC;--border-subtle:#EDE8E0;--font:'Inter',sans-serif;--radius-sm:14px;}
+.dark-theme{--bg:#141210;--card-bg:#201E1B;--text:#F0EBE3;--text-secondary:#9E9488;--text-muted:#6A6058;--accent:#C8A96E;--accent-light:#3A2E1E;--item-bg:#272320;--border:#2E2A25;--border-subtle:#252220;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:var(--font);background:var(--bg);color:var(--text);max-width:820px;margin:0 auto;padding:24px 24px 60px;-webkit-font-smoothing:antialiased;transition:background .4s,color .3s;}
+.back-btn{display:inline-flex;align-items:center;gap:7px;margin-bottom:20px;padding:9px 18px;background:var(--text);color:var(--bg);border-radius:999px;font-weight:700;font-size:0.84rem;cursor:pointer;border:none;font-family:var(--font);text-decoration:none;transition:background .2s;}
+.back-btn:hover{background:var(--accent);}
+.action-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.action-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 18px;border-radius:999px;border:1.5px solid var(--border);background:var(--card-bg);cursor:pointer;font-family:var(--font);font-size:0.82rem;font-weight:600;color:var(--text);transition:all .2s;}
+.action-btn:hover{border-color:var(--accent);color:var(--accent);}
+.action-btn.active-fav{background:#FEF2F2;border-color:#E07A5F;color:#E07A5F;}
+.action-btn.active-wish{background:var(--item-bg);border-color:var(--accent);color:var(--accent);}
+.hero-img{width:100%;max-height:480px;object-fit:cover;border-radius:20px;margin-bottom:28px;box-shadow:0 0 0 1px var(--border),0 20px 60px rgba(0,0,0,0.12);}
+h1{font-size:2.2rem;font-weight:800;letter-spacing:-0.04em;margin-bottom:10px;}
+.detail-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.meta-tag{background:var(--item-bg);border:1px solid var(--border-subtle);border-radius:999px;padding:5px 13px;font-size:0.74rem;font-weight:600;color:var(--text-secondary);}
+.meta-tag.accent{background:var(--accent);color:#fff;border-color:var(--accent);}
+.detail-text{font-size:1rem;color:var(--text-secondary);line-height:1.65;margin-bottom:24px;}
+.section-label{font-size:0.7rem;text-transform:uppercase;letter-spacing:2.5px;font-weight:700;color:var(--text-muted);margin-bottom:16px;margin-top:28px;}
+
+/* ---- Route stops (scenario places) ---- */
+.route-stops{margin-bottom:8px;}
+.route-stop{display:flex;gap:0;margin-bottom:0;}
+.route-stop-connector{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:40px;}
+.route-stop-num{width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;font-size:0.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 8px rgba(200,169,110,0.35);z-index:1;}
+.route-stop-line{width:2px;flex:1;background:linear-gradient(to bottom,var(--accent),rgba(200,169,110,0.2));min-height:20px;margin:4px 0;}
+.route-stop-card{flex:1;background:var(--card-bg);border:1px solid var(--border-subtle);border-radius:var(--radius-sm);padding:16px;margin-bottom:12px;transition:border-color .2s,box-shadow .2s;}
+.route-stop-card:hover{border-color:var(--accent);box-shadow:0 4px 20px rgba(200,169,110,0.12);}
+.route-stop-type{font-size:0.62rem;text-transform:uppercase;letter-spacing:2px;font-weight:700;color:var(--accent);margin-bottom:4px;}
+.route-stop-name{font-size:1.1rem;font-weight:700;letter-spacing:-0.02em;margin-bottom:4px;}
+.route-stop-desc{font-size:0.85rem;color:var(--text-secondary);line-height:1.5;margin-bottom:6px;}
+.route-stop-why{font-size:0.8rem;color:var(--accent-hover);font-style:italic;padding:6px 10px;background:rgba(200,169,110,0.08);border-radius:8px;margin-bottom:8px;border-left:2px solid var(--accent);}
+.route-stop-meta{display:flex;gap:12px;flex-wrap:wrap;}
+.route-meta-item{display:flex;align-items:center;gap:4px;font-size:0.75rem;color:var(--text-muted);background:var(--item-bg);padding:4px 9px;border-radius:999px;}
+.route-total{text-align:right;font-weight:700;font-size:0.9rem;color:var(--accent);padding:10px 0 20px;border-top:1px solid var(--border-subtle);}
+
+.route-box{background:var(--item-bg);border-radius:14px;padding:18px;margin-bottom:20px;border-left:3px solid var(--accent);font-size:0.88rem;line-height:1.7;color:var(--text-secondary);}
+.history-box{background:var(--item-bg);border-radius:14px;padding:16px;margin-bottom:20px;font-style:italic;font-size:0.86rem;color:var(--text-secondary);border:1px solid var(--border-subtle);}
+.tips-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.tip{background:var(--item-bg);border:1px solid var(--border-subtle);border-radius:999px;padding:5px 12px;font-size:0.78rem;color:var(--text-secondary);}
+.footer-line{margin-top:36px;padding-top:20px;border-top:1px solid var(--border-subtle);text-align:center;font-size:0.78rem;color:var(--text-muted);}
+/* Event detail styles */
+.criteria-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;}
+.criteria-item{background:var(--item-bg);border-radius:var(--radius-sm);padding:14px;border:1px solid var(--border-subtle);text-align:center;}
+.criteria-value{font-size:1rem;font-weight:700;color:var(--text);}
+.criteria-label{font-size:0.68rem;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-muted);margin-top:3px;}
+</style></head>
+<body>
+<script>
+const t=localStorage.getItem('theme');
+function _syncDtIcons(isDark){
+    const moon=document.getElementById('dtMoon');
+    const sun=document.getElementById('dtSun');
+    if(moon) moon.style.display=isDark?'none':'block';
+    if(sun)  sun.style.display=isDark?'block':'none';
+}
+if(t==='dark'){document.body.classList.add('dark-theme');_syncDtIcons(true);}
+function toggleFav(id){let f=JSON.parse(localStorage.getItem('sputnikFav')||'[]');if(f.includes(id))f=f.filter(x=>x!==id);else f.push(id);localStorage.setItem('sputnikFav',JSON.stringify(f));location.reload();}
+function toggleWish(id){let w=JSON.parse(localStorage.getItem('sputnikWish')||'[]');if(w.includes(id))w=w.filter(x=>x!==id);else w.push(id);localStorage.setItem('sputnikWish',JSON.stringify(w));location.reload();}
+function toggleDT(){
+    document.body.classList.toggle('dark-theme');
+    const isDark=document.body.classList.contains('dark-theme');
+    localStorage.setItem('theme',isDark?'dark':'light');
+    _syncDtIcons(isDark);
+    try{new BroadcastChannel('sputnik_theme').postMessage(isDark?'dark':'light');}catch(e){}
+}
+try{new BroadcastChannel('sputnik_theme').addEventListener('message',e=>{
+    const isDark=e.data==='dark';
+    document.body.classList.toggle('dark-theme',isDark);
+    localStorage.setItem('theme',e.data);
+    _syncDtIcons(isDark);
+});}catch(e){}
+<\/script>
+<button class="back-btn" onclick="window.close()">← Назад</button>
+<div class="action-bar">
+    <button class="action-btn ${isFav?'active-fav':''}" onclick="toggleFav('${item.id}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="${isFav?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        ${isFav ? 'Убрать из избранного' : 'В избранное'}
+    </button>
+    <button class="action-btn ${isWish?'active-wish':''}" onclick="toggleWish('${item.id}')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="${isWish?'currentColor':'none'}" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+        ${isWish ? 'Убрать из списка' : 'Хочу побывать'}
+    </button>
+    <button class="action-btn" id="dtBtn" onclick="toggleDT()">
+        <svg id="dtMoon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg id="dtSun" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="display:none"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/><line x1="4.22" y1="19.78" x2="6.34" y2="17.66"/><line x1="17.66" y1="6.34" x2="19.78" y2="4.22"/></svg>
+        Тема
+    </button>
+</div>
+<img class="hero-img" src="${item.img}" alt="${item.title}" />
+<h1>${item.title}</h1>
+<div class="detail-meta">
+    ${item.time ? `<span class="meta-tag">⏱ ${item.time}</span>` : ''}
+    ${item.start ? `<span class="meta-tag accent">Старт: ${item.start}</span>` : ''}
+    ${item.location||item.address ? `<span class="meta-tag">📍 ${item.location||item.address}</span>` : ''}
+    ${item.priceValue !== undefined ? `<span class="meta-tag">${item.priceValue === 0 ? 'Бесплатно' : '~' + item.priceValue + ' ₽'}</span>` : (item.criteria?.price ? `<span class="meta-tag">${item.criteria.price}</span>` : '')}
+    ${item.distance ? `<span class="meta-tag">${item.distance <= 5 ? 'Центр города' : item.distance + ' км от центра'}</span>` : ''}
+</div>
+<p class="detail-text">${item.detail||item.desc||''}</p>
+${type === 'event' && item.criteria ? `
+<div class="criteria-grid">
+    <div class="criteria-item"><div class="criteria-value">${item.criteria.time||'—'}</div><div class="criteria-label">Время</div></div>
+    <div class="criteria-item"><div class="criteria-value">${item.criteria.price||'—'}</div><div class="criteria-label">Стоимость</div></div>
+    <div class="criteria-item"><div class="criteria-value">${item.criteria.highlight||'—'}</div><div class="criteria-label">Особенность</div></div>
+</div>` : ''}
+${type==='scenario' && item.places ? `<div class="section-label">Маршрут — куда и зачем</div><div class="route-stops">${placesHTML}</div><div class="route-total">Итого: ~${total} ₽</div>` : ''}
+${item.route_guide ? `<div class="section-label">Пошаговый план</div><div class="route-box">${item.route_guide.replace(/\n/g,'<br>')}</div>` : ''}
+${item.history ? `<div class="section-label">История места</div><div class="history-box">📜 ${item.history}</div>` : ''}
+${item.article ? `<div class="section-label">Подробнее</div><p class="detail-text">${item.article}</p>` : ''}
+${item.tips?.length ? `<div class="section-label">Советы</div><div class="tips-row">${item.tips.map(t=>`<span class="tip">✓ ${t}</span>`).join('')}</div>` : ''}
+${mapHTML ? `<div class="section-label">На карте</div>${mapHTML}` : ''}
+<div class="footer-line">📞 +7 (843) 555-СПУТНИК · privet@sputnik-tatarstan.ru</div>
+</body></html>`;
+    }
+
+    /* ===================================================
+       FAVORITES & WISHLIST MODALS
+    =================================================== */
+    window.openFavorites = function() {
+        document.getElementById('favoritesModal').classList.add('active');
+        const grid = document.getElementById('favoritesList');
+        if (!grid) return;
+        if (!window.favorites.length) { grid.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:36px 24px;"><div style="font-size:2rem;margin-bottom:10px;opacity:0.4">♡</div><div style="font-weight:600;font-size:0.95rem;margin-bottom:5px;">Здесь пока пусто</div><div style="font-size:0.82rem;opacity:0.7;">Нажмите ♡ на карточке сценария, чтобы добавить</div></div>'; return; }
+        grid.innerHTML = window.favorites.map(id => {
+            const item = scenariosData.find(x=>x.id===id)||eventsData.find(x=>x.id===id);
+            if (!item) return '';
+            const n = JSON.parse(localStorage.getItem('note_'+id)||'{}');
+            return `<div class="fav-item">
+                <strong><a href="javascript:window.openDetail('${item.id}')">${item.icon||'📍'} ${item.title}</a></strong>
+                <label>Дата визита</label>
+                <input type="date" value="${n.date||''}" onchange="saveNote('${id}','date',this.value)"/>
+                <label>Заметка</label>
+                <textarea onchange="saveNote('${id}','imp',this.value)" placeholder="Ваши впечатления...">${n.imp||''}</textarea>
+                <button class="remove-btn" onclick="removeFav('${id}')">Удалить</button>
+            </div>`;
+        }).join('');
+    };
+    window.closeFavorites = function() { document.getElementById('favoritesModal').classList.remove('active'); };
+
+    window.openWishlist = function() {
+        document.getElementById('wishlistModal').classList.add('active');
+        const grid = document.getElementById('wishlistList');
+        if (!grid) return;
+        if (!window.wishlist.length) { grid.innerHTML = '<div style="text-align:center;color:var(--text-muted);padding:36px 24px;"><div style="font-size:2rem;margin-bottom:10px;opacity:0.4">🔖</div><div style="font-weight:600;font-size:0.95rem;margin-bottom:5px;">Список мест пуст</div><div style="font-size:0.82rem;opacity:0.7;">Нажмите 🔖 на карточке, чтобы сохранить маршрут</div></div>'; return; }
+        grid.innerHTML = window.wishlist.map(id => {
+            const item = scenariosData.find(x=>x.id===id)||eventsData.find(x=>x.id===id);
+            if (!item) return '';
+            const n = JSON.parse(localStorage.getItem('note_'+id)||'{}');
+            return `<div class="fav-item">
+                <strong><a href="javascript:window.openDetail('${item.id}')">${item.icon||'📍'} ${item.title}</a></strong>
+                <label>Дата визита</label>
+                <input type="date" value="${n.date||''}" onchange="saveNote('${id}','date',this.value)"/>
+                <label>Заметка</label>
+                <textarea onchange="saveNote('${id}','imp',this.value)" placeholder="Заметки о поездке...">${n.imp||''}</textarea>
+                <button class="remove-btn" onclick="removeWish('${id}')">Удалить</button>
+            </div>`;
+        }).join('');
+    };
+    window.closeWishlist = function() { document.getElementById('wishlistModal').classList.remove('active'); };
+
+    window.saveNote = function(id, key, val) {
+        const n = JSON.parse(localStorage.getItem('note_'+id)||'{}');
+        n[key] = val; localStorage.setItem('note_'+id, JSON.stringify(n));
+    };
+    window.removeFav  = function(id) { window.favorites = window.favorites.filter(f=>f!==id); saveFavs(); renderCards(); openFavorites(); };
+    window.removeWish = function(id) { window.wishlist  = window.wishlist.filter(w=>w!==id); saveWishs(); renderCards(); openWishlist(); };
+
+    /* ===================================================
+       AUTH
+    =================================================== */
+    let currentUser = JSON.parse(localStorage.getItem('sputnikUser')||'null');
+
+    window.handleAuth = function() {
+        if (currentUser) { localStorage.removeItem('sputnikUser'); currentUser = null; updateAuthUI(); }
+        else document.getElementById('authModal').classList.add('active');
+    };
+    window.toggleAuthMode = function() {
+        const t = document.getElementById('authModalTitle');
+        t.textContent = t.textContent.includes('Вход') ? 'Регистрация' : 'Вход';
+    };
+    window.submitAuth = function() {
+        const name = document.getElementById('authName').value.trim();
+        const email = document.getElementById('authEmail').value.trim();
+        const pass = document.getElementById('authPassword').value;
+        if (!name||!email||!pass) { alert('Заполните все поля'); return; }
+        currentUser = { name, email };
+        localStorage.setItem('sputnikUser', JSON.stringify(currentUser));
+        closeAuth(); updateAuthUI();
+    };
+    window.closeAuth = function() { document.getElementById('authModal').classList.remove('active'); };
+    function updateAuthUI() {
+        const btn = document.getElementById('authBtn');
+        const greet = document.getElementById('userGreeting');
+        if (currentUser) {
+            btn.textContent = 'Выйти'; greet.style.display = 'inline';
+            greet.textContent = currentUser.name;
+        } else {
+            btn.textContent = 'Войти'; greet.style.display = 'none';
+        }
+    }
+
+    /* ===================================================
+       THEME
+    =================================================== */
+    window.toggleTheme = function() {
+        const btn = document.getElementById('themeToggle');
+        btn.classList.add('spinning');
+        setTimeout(() => btn.classList.remove('spinning'), 450);
+
+        document.body.classList.toggle('dark-theme');
+        const isDark = document.body.classList.contains('dark-theme');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+
+        // Swap icons: moon in light mode, sun in dark mode
+        document.getElementById('themeIconMoon').style.display = isDark ? 'none' : 'block';
+        document.getElementById('themeIconSun').style.display = isDark ? 'block' : 'none';
+
+        // Sync to any open detail pages (BroadcastChannel)
+        try { new BroadcastChannel('sputnik_theme').postMessage(isDark ? 'dark' : 'light'); } catch(e) {}
+    };
+
+    /* ===================================================
+       ADMIN
+    =================================================== */
+    let adminAuth = false;
+    const ADMIN_PW = 'sputnik2026';
+    let adminTab = 'events', editingId = null;
+
+    window.requestAdminAccess = function() {
+        if (adminAuth) { openAdminInternal(); return; }
+        document.getElementById('adminPasswordModal').classList.add('active');
+        document.getElementById('adminPasswordInput').value = '';
+        document.getElementById('adminPasswordError').style.display = 'none';
+        setTimeout(() => document.getElementById('adminPasswordInput').focus(), 100);
+    };
+    window.checkAdminPassword = function() {
+        const v = document.getElementById('adminPasswordInput').value;
+        if (v === ADMIN_PW) {
+            adminAuth = true;
+            document.getElementById('adminPasswordModal').classList.remove('active');
+            openAdminInternal();
+        } else {
+            document.getElementById('adminPasswordError').style.display = 'block';
+            document.getElementById('adminPasswordInput').value = '';
+        }
+    };
+    window.closeAdminPassword = function() { document.getElementById('adminPasswordModal').classList.remove('active'); };
+
+    function openAdminInternal() {
+        document.getElementById('adminModal').classList.add('active');
+        renderAdminContent();
+    }
+    window.closeAdmin = function() { document.getElementById('adminModal').classList.remove('active'); editingId = null; };
+    window.switchAdminTab = function(tab) {
+        adminTab = tab;
+        document.querySelectorAll('.admin-tabs button').forEach(b => b.classList.toggle('active', b.dataset.tab===tab));
+        renderAdminContent();
+    };
+
+    function renderAdminContent() {
+        const c = document.getElementById('adminContent'); if (!c) return;
+        const list = adminTab === 'events' ? eventsData : scenariosData;
+        const label = adminTab === 'events' ? 'Событие' : 'Маршрут';
+        c.innerHTML = `
+            <button class="btn-add" onclick="openAddForm()">+ Добавить ${label}</button>
+            <div class="admin-list">
+                ${list.map(item=>`
+                    <div class="admin-item">
+                        <div class="admin-item-info"><strong>${item.title}</strong><small>${item.id}</small></div>
+                        <div class="admin-item-actions">
+                            <button class="btn-edit" onclick="openEditForm('${item.id}')">✎</button>
+                            <button class="btn-delete" onclick="deleteItem('${item.id}')">✕</button>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    window.openAddForm  = function() { editingId = null; showForm(null); };
+    window.openEditForm = function(id) {
+        editingId = id;
+        const list = adminTab === 'events' ? eventsData : scenariosData;
+        showForm(list.find(x=>x.id===id) || null);
+    };
+
+    function showForm(item) {
+        const c = document.getElementById('adminContent'); if (!c) return;
+        const isEv = adminTab === 'events';
+        const label = isEv ? 'Событие' : 'Маршрут';
+        const d = item || {};
+        const evFields = `
+            <input name="title" value="${d.title||''}" placeholder="Название" required />
+            <input name="desc" value="${d.desc||''}" placeholder="Краткое описание" />
+            <input name="img" value="${d.img||''}" placeholder="URL изображения" />
+            <input name="address" value="${d.address||''}" placeholder="Адрес" />
+            <textarea name="detail" rows="2" placeholder="Подробное описание">${d.detail||''}</textarea>
+            <input name="duration" value="${d.duration||''}" placeholder="Продолжительность" />
+            <div class="form-row">
+                <input name="criteria_time" value="${d.criteria?.time||''}" placeholder="Время" />
+                <input name="criteria_price" value="${d.criteria?.price||''}" placeholder="Цена" />
+                <input name="criteria_highlight" value="${d.criteria?.highlight||''}" placeholder="Особенность" />
+            </div>
+            <textarea name="history" rows="2" placeholder="История">${d.history||''}</textarea>
+            <textarea name="article" rows="2" placeholder="Статья">${d.article||''}</textarea>
+            <input name="tips" value="${(d.tips||[]).join('; ')}" placeholder="Советы через ; " />
+            <input name="coords" value="${(d.coords||[]).join(', ')}" placeholder="Координаты (лат, лон)" />
+        `;
+        const plHTML = (d.places||[]).map((p,i)=>`
+            <div class="place-entry">
+                <button type="button" class="remove-place" onclick="removePlace(${i})">✕</button>
+                <input name="place_t_${i}" value="${p.t||''}" placeholder="Тип" />
+                <input name="place_n_${i}" value="${p.n||''}" placeholder="Название" />
+                <input name="place_d_${i}" value="${p.d||''}" placeholder="Описание" />
+                <input name="place_a_${i}" value="${p.a||''}" placeholder="Адрес" />
+                <input name="place_h_${i}" value="${p.h||''}" placeholder="Часы" />
+                <input name="place_price_${i}" value="${p.price||''}" placeholder="Цена" />
+            </div>
+        `).join('');
+        const scFields = `
+            <input name="icon" value="${d.icon||''}" placeholder="Эмодзи" />
+            <input name="title" value="${d.title||''}" placeholder="Название" required />
+            <input name="subtitle" value="${d.subtitle||''}" placeholder="Подзаголовок" />
+            <input name="time" value="${d.time||''}" placeholder="Время (5–6 ч)" />
+            <input name="start" value="${d.start||''}" placeholder="Старт (18:00)" />
+            <input name="img" value="${d.img||''}" placeholder="URL изображения" />
+            <input name="location" value="${d.location||''}" placeholder="Локация" />
+            <div class="form-row">
+                <input name="popularity" value="${d.popularity||''}" placeholder="Популярность 0-100" type="number" />
+                <input name="distance" value="${d.distance||''}" placeholder="Расстояние км" type="number" step="0.1" />
+                <input name="durationMinutes" value="${d.durationMinutes||''}" placeholder="Длительность мин" type="number" />
+                <input name="priceValue" value="${d.priceValue||''}" placeholder="Цена ₽" type="number" />
+            </div>
+            <input name="categories" value="${(d.categories||[]).join('; ')}" placeholder="Категории через ; (kitchen, entertainment, leisure, workstudy, culture)" />
+            <textarea name="history" rows="2" placeholder="История">${d.history||''}</textarea>
+            <textarea name="article" rows="2" placeholder="Статья">${d.article||''}</textarea>
+            <input name="tips" value="${(d.tips||[]).join('; ')}" placeholder="Советы через ; " />
+            <textarea name="route_guide" rows="3" placeholder="Маршрут пошагово">${d.route_guide||''}</textarea>
+            <input name="coords" value="${(d.coords||[]).join(', ')}" placeholder="Координаты (лат, лон)" />
+            <div id="placesContainer">${plHTML}</div>
+            <button type="button" onclick="addPlace()" style="background:var(--accent-light);color:var(--text);width:auto;border-radius:999px;padding:8px 16px;border:none;font-family:var(--font);cursor:pointer;font-weight:600;">+ Место</button>
+        `;
+        c.innerHTML = `
+            <h3 style="margin-bottom:16px;">${item?'Редактирование':'Добавление'} — ${label}</h3>
+            <form id="adminForm" onsubmit="submitForm(event)">
+                ${isEv ? evFields : scFields}
+                <div style="display:flex;gap:10px;margin-top:14px;">
+                    <button type="submit">Сохранить</button>
+                    <button type="button" class="close-btn" onclick="renderAdminContent()">Отмена</button>
+                </div>
+            </form>
+        `;
+    }
+
+    window.addPlace = function() {
+        const c = document.getElementById('placesContainer'); if (!c) return;
+        const i = c.querySelectorAll('.place-entry').length;
+        const div = document.createElement('div'); div.className = 'place-entry';
+        div.innerHTML = `
+            <button type="button" class="remove-place" onclick="removePlace(${i})">✕</button>
+            <input name="place_t_${i}" placeholder="Тип" /><input name="place_n_${i}" placeholder="Название" />
+            <input name="place_d_${i}" placeholder="Описание" /><input name="place_a_${i}" placeholder="Адрес" />
+            <input name="place_h_${i}" placeholder="Часы" /><input name="place_price_${i}" placeholder="Цена" />
+        `;
+        c.appendChild(div);
+    };
+    window.removePlace = function(idx) {
+        const c = document.getElementById('placesContainer'); if (!c) return;
+        const entries = c.querySelectorAll('.place-entry');
+        if (entries.length <= 1) { alert('Минимум одно место'); return; }
+        entries[idx]?.remove();
+        c.querySelectorAll('.place-entry').forEach((el,i) => {
+            el.querySelectorAll('input').forEach(inp => {
+                if (inp.name) { const pts=inp.name.split('_'); if(pts.length===3) inp.name=`${pts[0]}_${pts[1]}_${i}`; }
+            });
+            const rb=el.querySelector('.remove-place'); if(rb) rb.onclick=()=>removePlace(i);
+        });
+    };
+
+    window.submitForm = function(e) {
+        e.preventDefault();
+        const form = document.getElementById('adminForm');
+        const fd = new FormData(form);
+        const d = {}; const isEv = adminTab === 'events';
+        d.id = editingId || generateId();
+        if (isEv) {
+            d.title=fd.get('title')||''; d.desc=fd.get('desc')||''; d.img=fd.get('img')||'';
+            d.address=fd.get('address')||''; d.detail=fd.get('detail')||''; d.duration=fd.get('duration')||'';
+            d.criteria={time:fd.get('criteria_time')||'',price:fd.get('criteria_price')||'',highlight:fd.get('criteria_highlight')||''};
+            d.history=fd.get('history')||''; d.article=fd.get('article')||'';
+            d.tips=fd.get('tips')?fd.get('tips').split(';').map(s=>s.trim()).filter(Boolean):[];
+            d.coords=fd.get('coords')?fd.get('coords').split(',').map(s=>parseFloat(s.trim())).filter(n=>!isNaN(n)):[];
+            if (editingId) { const i=eventsData.findIndex(x=>x.id===editingId); if(i!==-1) eventsData[i]=d; }
+            else eventsData.push(d);
+        } else {
+            d.icon=fd.get('icon')||''; d.title=fd.get('title')||''; d.subtitle=fd.get('subtitle')||'';
+            d.time=fd.get('time')||''; d.start=fd.get('start')||''; d.img=fd.get('img')||'';
+            d.location=fd.get('location')||'';
+            d.popularity=parseInt(fd.get('popularity'))||0; d.distance=parseFloat(fd.get('distance'))||0;
+            d.durationMinutes=parseInt(fd.get('durationMinutes'))||0; d.priceValue=parseInt(fd.get('priceValue'))||0;
+            d.categories=fd.get('categories')?fd.get('categories').split(';').map(s=>s.trim()).filter(Boolean):[];
+            d.history=fd.get('history')||''; d.article=fd.get('article')||'';
+            d.tips=fd.get('tips')?fd.get('tips').split(';').map(s=>s.trim()).filter(Boolean):[];
+            d.route_guide=fd.get('route_guide')||'';
+            d.coords=fd.get('coords')?fd.get('coords').split(',').map(s=>parseFloat(s.trim())).filter(n=>!isNaN(n)):[];
+            const places=[];
+            form.querySelectorAll('.place-entry').forEach((el,i)=>{
+                const t=el.querySelector(`[name="place_t_${i}"]`)?.value||'';
+                const n=el.querySelector(`[name="place_n_${i}"]`)?.value||'';
+                const desc=el.querySelector(`[name="place_d_${i}"]`)?.value||'';
+                const a=el.querySelector(`[name="place_a_${i}"]`)?.value||'';
+                const h=el.querySelector(`[name="place_h_${i}"]`)?.value||'';
+                const price=el.querySelector(`[name="place_price_${i}"]`)?.value||'';
+                if(n) places.push({t,n,d:desc,a,h,price});
+            });
+            d.places=places;
+            if (editingId) { const i=scenariosData.findIndex(x=>x.id===editingId); if(i!==-1) scenariosData[i]=d; }
+            else scenariosData.push(d);
+        }
+        saveData(); window.events=eventsData; window.scenarios=scenariosData;
+        refreshAll(); renderAdminContent(); editingId=null;
+        alert('✅ Сохранено!');
+    };
+
+    window.deleteItem = function(id) {
+        if (!confirm('Удалить запись?')) return;
+        if (adminTab==='events') eventsData=eventsData.filter(x=>x.id!==id);
+        else scenariosData=scenariosData.filter(x=>x.id!==id);
+        saveData(); window.events=eventsData; window.scenarios=scenariosData;
+        refreshAll(); renderAdminContent();
+    };
+
+    window.exportData = function() {
+        const blob = new Blob([JSON.stringify({events:eventsData,scenarios:scenariosData,exportedAt:new Date().toISOString()},null,2)],{type:'application/json'});
+        const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='sputnik_data.json';
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    };
+    window.importData = function(event) {
+        const file=event.target.files[0]; if(!file) return;
+        const r=new FileReader();
+        r.onload=function(e){
+            try {
+                const data=JSON.parse(e.target.result);
+                if(!data.events||!data.scenarios){alert('Неверный формат');return;}
+                if(!confirm('Заменить все данные?')) return;
+                eventsData=data.events; scenariosData=data.scenarios;
+                saveData(); window.events=eventsData; window.scenarios=scenariosData;
+                refreshAll(); renderAdminContent(); alert('✅ Импорт успешен!');
+            } catch(err) { alert('Ошибка: '+err.message); }
+        };
+        r.readAsText(file); event.target.value='';
+    };
+
+    /* ===================================================
+       REFRESH
+    =================================================== */
+    function refreshAll() {
+        renderMarquee();
+        renderCards();
+        document.getElementById('favCount').textContent = window.favorites.length;
+        document.getElementById('wishCount').textContent = window.wishlist.length;
+        renderActiveFilters();
+    }
+
+    /* ===================================================
+       INIT
+    =================================================== */
+    window.onload = function() {
+        loadData();
+
+        // Apply theme (also syncs icons)
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) applyTheme(savedTheme);
+
+        // Nav scroll
+        const nav = document.getElementById('topNav');
+        window.addEventListener('scroll', () => {
+            nav.classList.toggle('scrolled', window.scrollY > 20);
+        }, { passive: true });
+
+        // Filter/sort state
+        if (window.currentSort) {
+            document.getElementById('sortBtn')?.classList.add('active');
+            document.getElementById('resetSort').style.display = 'inline-flex';
+        }
+        if (window.currentFilters.length) {
+            document.getElementById('filterBtn')?.classList.add('active');
+            document.getElementById('resetFilter').style.display = 'inline-flex';
+        }
+
+        refreshAll();
+        updateAuthUI();
+
+        // Admin double-click
+        const adminTrigger = document.getElementById('adminTrigger');
+        if (adminTrigger) adminTrigger.addEventListener('dblclick', e => { e.preventDefault(); requestAdminAccess(); });
+
+        // Close modals on overlay click
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    this.classList.remove('active');
+                }
+            });
+        });
+    };
+
+    })();
+    
+// FIX theme sync — applies theme AND updates icons everywhere
+function applyTheme(theme){
+    document.body.classList.toggle('dark-theme', theme === 'dark');
+    localStorage.setItem('theme', theme);
+    // Update nav icons
+    const moon = document.getElementById('themeIconMoon');
+    const sun  = document.getElementById('themeIconSun');
+    if (moon) moon.style.display = theme === 'dark' ? 'none' : 'block';
+    if (sun)  sun.style.display  = theme === 'dark' ? 'block' : 'none';
+}
+document.addEventListener('DOMContentLoaded', () => {
+    const t = localStorage.getItem('theme');
+    if (t) applyTheme(t);
+    // Add floating particles to hero
+    const hero = document.querySelector('.hero-content');
+    if (hero) {
+        for (let i = 0; i < 6; i++) {
+            const p = document.createElement('div');
+            p.className = 'hero-particle';
+            const size = Math.random() * 4 + 2;
+            p.style.cssText = `width:${size}px;height:${size}px;left:${10+Math.random()*80}%;bottom:${Math.random()*40}%;animation-delay:${Math.random()*8}s;animation-duration:${6+Math.random()*6}s`;
+            hero.appendChild(p);
+        }
+    }
+    // Listen for theme changes from detail pages
+    try {
+        new BroadcastChannel('sputnik_theme').addEventListener('message', e => applyTheme(e.data));
+    } catch(err) {}
+});
+
+</script>
+</body>
+</html>
